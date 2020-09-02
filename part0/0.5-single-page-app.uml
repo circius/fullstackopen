@@ -1,0 +1,7 @@
+@startuml
+title new-note flow for single page app
+note over Browser: Browser constructs new note JSON\nand updates the DOM, then:
+Browser->Server: POST note JSON to https://studies.cs.helsinki.fi/exampleapp/new_note_spa
+note right of Server: Server parses the note JSON \nand adds it to its notes Array.
+Server->Browser: {'message':'note created'}
+@enduml
