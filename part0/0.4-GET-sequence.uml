@@ -1,7 +1,7 @@
 @startuml
 title Posting a note
 Browser->Server: HTTP POST https://studies.cs.helsinki.fi/exampleapp/new_note
-note right of Server: Backend appends form data from POST to data.json
+note right of Server: Backend validates the POSTed data and appends it to\nits list of notes.
 Server-->Browser: 302 : redirect to /exampleapp/notes
 Browser->Server: HTTP GET https://studies.cs.helsinki.fi/exampleapp/notes
 Server-->Browser: 200 OK: HTML-code
@@ -13,6 +13,7 @@ Browser->Server: HTTP GET https://studies.cs.helsinki.fi/exampleapp/main.js
 Server-->Browser: 200 OK : script
 note over Browser: queues evaluation of script.\nencounters note-fetching code.
 Browser->Server: HTTP GET https://studies.cs.helsinki.fi/exampleapp/data.json
+note right of Server: Server encodes its list of notes as JSON and sends the result.
 Server-->Browser: 200 OK : xhr
-note over Browser: Parses data.json according to rules\nin main.js, and applies the result\nto the DOM.
+note over Browser: completion of data.json download fires \nonreadystatechange();\ndata.json is parsed into the DOM. 
 @enduml
