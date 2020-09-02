@@ -1,0 +1,14 @@
+@startuml
+Browser->Server: GET https://studies.cs.helsinki.fi/exampleapp/spa
+Server->Browser: 200 OK: html-code
+note over Browser: discovers <link />, requests stylesheet
+Browser->Server: GET https://studies.cs.helsinki.fi/exampleapp/main.css
+Server->Browser: 200 OK: stylesheet
+note over Browser: discovers <script />, requests script;\nbegins to apply stylesheet
+Browser->Server: GET https://studies.cs.helsinki.fi/exampleapp/spa.js
+Server->Browser: 200 OK: script
+note over Browser: script triggers GET of notes JSON
+Browser->Server: GET https://studies.cs.helsinki.fi/exampleapp/data.json
+Server->Browser: 200 OK: XHR
+note over Browser: completion of data.json download\ntriggers updating of DOM
+@enduml
