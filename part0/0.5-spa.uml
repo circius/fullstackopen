@@ -9,6 +9,7 @@ Browser->Server: GET https://studies.cs.helsinki.fi/exampleapp/spa.js
 Server->Browser: 200 OK: script
 note over Browser: script triggers GET of notes JSON
 Browser->Server: GET https://studies.cs.helsinki.fi/exampleapp/data.json
-Server->Browser: 200 OK: XHR
+note over Server: builds data.json from notes array
+Server->Browser: 200 OK: [{ content: "notestring", date:"yyyy-mm-dd"}, ...]
 note over Browser: completion of data.json download\ntriggers updating of DOM
 @enduml
