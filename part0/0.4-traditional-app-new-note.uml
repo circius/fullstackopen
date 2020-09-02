@@ -8,7 +8,7 @@ Server-->Browser: 200 OK: HTML-code
 note over Browser: begins to render HTML;\nencounters CSS <link />.\nSends GET and proceeds.
 Browser->Server: HTTP GET https://studies.cs.helsinki.fi/exampleapp/main.css
 Server-->Browser: 200 OK: stylesheet
-note over Browser: queues application of CSS.\n Meanwhile, has encountered <script />.
+note over Browser: queues application of CSS.\nMeanwhile, has encountered <script />.
 Browser->Server: HTTP GET https://studies.cs.helsinki.fi/exampleapp/main.js
 Server-->Browser: 200 OK : script
 note over Browser: queues evaluation of script.\nencounters note-fetching code.
