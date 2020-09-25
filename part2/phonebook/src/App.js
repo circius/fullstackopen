@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { Filter } from './Filter'
+import { WarnFlash, TellFlash } from './Flash'
 import { PersonForm } from './PersonForm'
 import { Persons } from './Persons'
 
@@ -12,12 +13,16 @@ const App = () => {
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
   const [currentFilter, setCurrentFilter] = useState('')
+  const [warnFlashMessage, setWarnFlashMessage] = useState(null)
+  const [tellFlashMessage, setTellFlashMessage] = useState(null)
 
   const stateUpdate = (setter) => (event) => setter(event.target.value)
 
   const newNameUpdate = stateUpdate(setNewName)
   const newNumberUpdate = stateUpdate(setNewNumber)
   const currentFilterUpdate = stateUpdate(setCurrentFilter)
+
+  const flashTimeout = 3000
 
   useEffect(() => {
     personInterface.getAll()
@@ -33,8 +38,11 @@ const App = () => {
 
     const addPerson = (person) => {
       personInterface.create(person)
-        .then(person =>
-          setPersons(persons.concat(person)))
+        .then(person => {
+          setPersons(persons.concat(person))
+          setTellFlashMessage(`added ${person.name} to the phonebook`)
+          setTimeout(() => setTellFlashMessage(null), flashTimeout)
+        })
       resetForm()
     }
 
@@ -43,7 +51,13 @@ const App = () => {
       personInterface.update(person)
         .then(returnedPerson =>{
           setPersons(persons.map(
-            (person) => person.id === returnedPerson.id ? returnedPerson : person ))})
+            (person) => person.id === returnedPerson.id ? returnedPerson : person))
+          setTellFlashMessage(`updated the number of ${returnedPerson.name}`)
+          setTimeout(setTellFlashMessage(null), flashTimeout)})
+        .catch(error => {
+          setWarnFlashMessage('something went wrong')
+          setTimeout(() => setWarnFlashMessage(null), flashTimeout)
+         })
     }
 
     const offerPersonUpdate = (newPerson) => {
@@ -86,16 +100,18 @@ const App = () => {
 
   return (
     <div>
-      <h2>Phonebook</h2>
+      <h1>Phonebook</h1>
+      <WarnFlash message={warnFlashMessage} />
+      <TellFlash message={tellFlashMessage} />
       <Filter filterValue={currentFilter} filterUpdater={currentFilterUpdate} />
-      <h2>add a new</h2>
+      <h1>add a new</h1>
       <PersonForm
         fields={[
           { label: "name:", value: newName, changeHandler: newNameUpdate },
           { label: 'number:', value: newNumber, changeHandler: newNumberUpdate }
         ]}
         submitFunction={inputSubmit} />
-      <h2>Numbers</h2>
+      <h1>Numbers</h1>
       <Persons persons={personsFiltered} deleteClickHandler={clickDeletePersonById} />
     </div>
   )
