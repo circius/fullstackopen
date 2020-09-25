@@ -1,20 +1,17 @@
 import React, { useState, useEffect } from 'react'
-import axios from 'axios'
+import { Filter } from './Filter'
+import { PersonForm } from './PersonForm'
+import { Persons } from './Persons'
+
+import personInterface from './services/person'
 
 
 const App = () => {
 
-  const [ persons, setPersons ] = useState([]) 
-  const [ newName, setNewName ] = useState('')
-  const [ newNumber, setNewNumber ] = useState('')
-  const [ currentFilter, setCurrentFilter ] = useState('')
-
-  const serverURL = "http://localhost:3001"
-  useEffect(() => {
-    axios
-    .get(serverURL + "/persons")
-    .then(response => setPersons(response.data)
-    )},[])
+  const [persons, setPersons] = useState([])
+  const [newName, setNewName] = useState('')
+  const [newNumber, setNewNumber] = useState('')
+  const [currentFilter, setCurrentFilter] = useState('')
 
   const stateUpdate = (setter) => (event) => setter(event.target.value)
 
@@ -22,25 +19,61 @@ const App = () => {
   const newNumberUpdate = stateUpdate(setNewNumber)
   const currentFilterUpdate = stateUpdate(setCurrentFilter)
 
+  useEffect(() => {
+    personInterface.getAll()
+      .then(persons => setPersons(persons)
+      )
+  }, [])
+
   const inputSubmit = (event) => {
     const resetForm = () => {
       setNewName("")
       setNewNumber('')
     }
+
     const addPerson = (person) => {
-      setPersons(persons.concat(newPerson))
+      personInterface.create(person)
+        .then(person =>
+          setPersons(persons.concat(person)))
       resetForm()
     }
-    const personsHasNewPersonP = () => persons.filter(
-      (person) => person.name === newName).length > 0
+
+    const updatePerson = (person) => {
+      console.log('updating person', person)
+      personInterface.update(person)
+        .then(returnedPerson =>{
+          setPersons(persons.map(
+            (person) => person.id === returnedPerson.id ? returnedPerson : person ))})
+    }
+
+    const offerPersonUpdate = (newPerson) => {
+      const id = persons.find((person) => person.name === newPerson.name).id
+      newPerson.id = id
+      return window.confirm(`${newPerson.name} is already added to phonebook;
+      replace the old number with a new one?`) ?
+        updatePerson(newPerson) :
+        null
+      }
 
     event.preventDefault()
-    const newPerson = {name: newName, number: newNumber}
-    const validAddition = !personsHasNewPersonP() 
-    
-    validAddition ?
-      addPerson(newPerson) : 
-      alert(`${newPerson.name} is already added to phonebook`) 
+    const newPerson = { name: newName, number: newNumber }
+
+    persons
+    .filter((person) => person.name === newName)
+    .length === 0 ?
+      addPerson(newPerson) :
+      offerPersonUpdate(newPerson)
+  }
+
+  const clickDeletePersonById = (id) => (event) => {
+    const deletePersonById = (id) => {
+      setPersons(persons.filter(person => person.id !== id))
+      personInterface.deleteById(id)
+    }
+    event.preventDefault()
+    return window.confirm(`delete user with id ${id} from the phonebook?`) ?
+      deletePersonById(id) :
+      null
   }
 
   const filterPersons = (persons, str) => persons.filter(
@@ -54,52 +87,18 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
-      <Filter filterValue={currentFilter} filterUpdater={currentFilterUpdate}/>
+      <Filter filterValue={currentFilter} filterUpdater={currentFilterUpdate} />
       <h2>add a new</h2>
       <PersonForm
-        fields = {[
-          {label: "name:", value: newName, changeHandler:newNameUpdate},
-          {label: 'number:', value: newNumber, changeHandler:newNumberUpdate}
+        fields={[
+          { label: "name:", value: newName, changeHandler: newNameUpdate },
+          { label: 'number:', value: newNumber, changeHandler: newNumberUpdate }
         ]}
-        submitFunction={inputSubmit}/>
+        submitFunction={inputSubmit} />
       <h2>Numbers</h2>
-      <Persons persons={personsFiltered}/>
+      <Persons persons={personsFiltered} deleteClickHandler={clickDeletePersonById} />
     </div>
   )
 }
-
-const Persons = ({persons}) => persons.map(
-  (person) => <Person person={person} key={person.name}/>
-)
-
-const PersonForm = ({fields, submitFunction}) => (
-  <form onSubmit={submitFunction}>
-{    fields.map(
-      (field) => <ControlledField 
-                  label={field.label} 
-                  value={field.value}
-                  changeHandler={field.changeHandler}
-                  key={field.label} /> )
-}        
-        <div>
-          <button type="submit">add</button>
-        </div>
-    </form>
-)
-
-const Filter = ({ filterValue, filterUpdater }) => (
-  <ControlledField 
-  label="filter shown with" 
-  value={filterValue} 
-  changeHandler={filterUpdater}/>
-)
-
-const ControlledField = ({label, value, changeHandler}) => (
-  <div>
-     {label} <input value={value} onChange={changeHandler}/>
-  </div>
-)
-
-const Person = ({person}) => <div>{person.name} {person.number}</div>
 
 export default App
