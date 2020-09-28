@@ -1,4 +1,5 @@
-const http = require('http')
+const express = require('express')
+const app = express()
 
 const phonebook = [
       {
@@ -13,11 +14,19 @@ const phonebook = [
       }
     ]
 
-const app = http.createServer((req, res) => {
-    res.writeHead(200, {'Content-Type': 'application/json'})
-    res.end(JSON.stringify(phonebook))
+app.get('/api/persons', (req, res) => {
+    res.json(phonebook)
+})
+
+app.get('/info', (req, res) => {
+    const phonebookEntries = phonebook.length
+    const info = `Phonebook has info for ${phonebookEntries} people`
+    const timestamp = new Date()
+
+    res.send(`${info}<br /><br />${timestamp}`)
 })
 
 const PORT = 3001
-app.listen(PORT)
-console.log('Server running on port ', PORT)
+app.listen(PORT, () => {
+    console.log('Server running on port ', PORT)
+})
