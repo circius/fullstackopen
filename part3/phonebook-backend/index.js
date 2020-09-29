@@ -5,26 +5,44 @@ const app = express()
 app.use(express.json())
 
 let phonebook = [
-      {
+    {
         "name": "Ada Lovelace",
         "number": "39-44-5323523",
         "id": 1
-      },
-      {
+    },
+    {
         "name": "Dan Abramov",
         "number": "12-43-234345",
         "id": 2
-      }
-    ]
+    }
+]
 
 app.get('/api/persons', (req, res) => {
     res.json(phonebook)
 })
 
+const errorResponse = (res, error) => res.status(400).json({
+    error: error
+})
+
 app.post('/api/persons', (req, res) => {
     const person = req.body
-    const id = Math.floor(Math.random()*(10**4))
-    const personEntry = { ...person, 'id': id}
+
+    const validPersonP = person => person.name && person.number
+    const uniquePersonP = person => phonebook.filter(
+        entry => entry.name === person.name).length === 0
+
+    if (!validPersonP(person)) {
+        return errorResponse(res, 'invalid person. supply name and number.')
+    }
+
+    if (!uniquePersonP(person)) {
+        return errorResponse(res, 'name must be unique')
+    }
+
+    const id = Math.floor(Math.random() * (10 ** 4))
+    const personEntry = { ...person, 'id': id }
+
     phonebook = phonebook.concat(personEntry)
     res.json(personEntry)
 })
@@ -32,12 +50,14 @@ app.post('/api/persons', (req, res) => {
 app.get('/api/persons/:id', (req, res) => {
     const id = Number(req.params.id)
     const person = phonebook.find(entry => entry.id === id)
+
     person ? res.json(person) : res.status(204).end()
 })
 
 app.delete('/api/persons/:id', (req, res) => {
     const id = Number(req.params.id)
     phonebook = phonebook.filter(entry => entry.id !== id)
+
     res.status(204).end()
 })
 
