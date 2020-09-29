@@ -1,5 +1,8 @@
+const { response } = require('express')
 const express = require('express')
 const app = express()
+
+app.use(express.json())
 
 let phonebook = [
       {
@@ -16,6 +19,14 @@ let phonebook = [
 
 app.get('/api/persons', (req, res) => {
     res.json(phonebook)
+})
+
+app.post('/api/persons', (req, res) => {
+    const person = req.body
+    const id = Math.floor(Math.random()*(10**4))
+    const personEntry = { ...person, 'id': id}
+    phonebook = phonebook.concat(personEntry)
+    res.json(personEntry)
 })
 
 app.get('/api/persons/:id', (req, res) => {
