@@ -21,9 +21,8 @@ app.get('/api/persons', (req, res) => {
     res.json(phonebook)
 })
 
-const errorResponse = (res, error) => res.status(400).json({
-    error: error
-})
+const errorResponse = (res, statusCode, error) => 
+    res.status(statusCode).json({'error': error})
 
 app.post('/api/persons', (req, res) => {
     const person = req.body
@@ -33,11 +32,11 @@ app.post('/api/persons', (req, res) => {
         entry => entry.name === person.name).length === 0
 
     if (!validPersonP(person)) {
-        return errorResponse(res, 'invalid person. supply name and number.')
+        return errorResponse(res, 400, 'invalid person. supply name and number.')
     }
 
     if (!uniquePersonP(person)) {
-        return errorResponse(res, 'name must be unique')
+        return errorResponse(res, 400, 'name must be unique')
     }
 
     const id = Math.floor(Math.random() * (10 ** 4))
