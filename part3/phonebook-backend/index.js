@@ -1,6 +1,8 @@
 const express = require('express')
 const morgan = require('morgan')
+const dotenv = require('dotenv').config()
 const cors = require('cors')
+const Entry = require('./modules/entries')
 
 const app = express()
 app.use(express.json())
@@ -10,22 +12,9 @@ app.use(cors())
 morgan.token('content', (req, res) => JSON.stringify(req.body))
 app.use(morgan(':method :url :status :res[content-length] - :response-time ms :content'))
 
-
-let phonebook = [
-    {
-        "name": "Ada Lovelace",
-        "number": "39-44-5323523",
-        "id": 1
-    },
-    {
-        "name": "Dan Abramov",
-        "number": "12-43-234345",
-        "id": 2
-    }
-]
-
 app.get('/api/persons', (req, res) => {
-    res.json(phonebook)
+    Entry.find({})
+        .then(result => res.json(result))
 })
 
 const errorResponse = (res, statusCode, error) =>
@@ -54,10 +43,13 @@ app.post('/api/persons', (req, res) => {
 })
 
 app.get('/api/persons/:id', (req, res) => {
-    const id = Number(req.params.id)
-    const person = phonebook.find(entry => entry.id === id)
-
-    person ? res.json(person) : res.status(204).end()
+    const id = req.params.id
+    Entry.findById(id)
+        .then(person => res.json(person))
+        .catch(error => {
+            console.log('unknown error: ', error.message)
+            res.status(204).end()
+        })
 })
 
 app.delete('/api/persons/:id', (req, res) => {
@@ -68,11 +60,14 @@ app.delete('/api/persons/:id', (req, res) => {
 })
 
 app.get('/info', (req, res) => {
-    const phonebookEntries = phonebook.length
-    const info = `Phonebook has info for ${phonebookEntries} people`
-    const timestamp = new Date()
-
-    res.send(`${info}<br /><br />${timestamp}`)
+    Entry.find({})
+        .then(result => {
+            const phonebookEntries = result.length
+            const info = `Phonebook has info for ${phonebookEntries} people`
+            const timestamp = new Date()
+            res.send(`${info}<br /><br />${timestamp}`)
+        })
+        .catch(error => console.log('unknown error: ', error.message))
 })
 
 const PORT = process.env.PORT || 3001
