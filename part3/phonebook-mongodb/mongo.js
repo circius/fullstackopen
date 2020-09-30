@@ -21,6 +21,7 @@ const addEntry = (mongoose, entry) => {
     const validEntryP = entry => entry.name && entry.number
     if (validEntryP(entry)) {
         entry.save().then(res => {
+            console.log(`added ${entry.name} number ${entry.number} to phonebook`)
             mongoose.connection.close()
         })
     } else {
@@ -29,8 +30,10 @@ const addEntry = (mongoose, entry) => {
 }
 
 const listEntries = (mongoose, model, filter) => {
+    const formatEntry = entry => `${entry.name} ${entry.number}`
+    console.log('phonebook:')
     model.find(filter).then(res => {
-        res.forEach(entry => console.log(entry))
+        res.forEach(entry => console.log(formatEntry(entry)))
         mongoose.connection.close()
     })
 }
