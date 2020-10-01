@@ -43,11 +43,12 @@ const App = () => {
           setTellFlashMessage(`added ${person.name} to the phonebook`)
           setTimeout(() => setTellFlashMessage(null), flashTimeout)
         })
+        .catch(error => {
+          setTimeout(setTellFlashMessage(error.response.data.error))})
       resetForm()
     }
 
     const updatePerson = (person) => {
-      console.log('updating person', person)
       personInterface.update(person)
         .then(returnedPerson =>{
           setPersons(persons.map(
@@ -56,8 +57,7 @@ const App = () => {
           setTimeout(setTellFlashMessage(null), flashTimeout)
         })
         .catch(error => {
-          console.error(error)
-          setWarnFlashMessage('something went wrong')
+          setWarnFlashMessage(error.response.data.error)
           setTimeout(() => setWarnFlashMessage(null), flashTimeout)
          })
     }
