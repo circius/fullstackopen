@@ -6,10 +6,12 @@ const Entry = require('./modules/entries')
 
 const app = express()
 app.use(express.json())
-app.use(express.static('build'))
+app.use(express.static('uild'))
 app.use(cors())
 
-morgan.token('content', (req, res) => JSON.stringify(req.body))
+console.log(`dotenv object arbitrary use: ${dotenv}`)
+
+morgan.token('content', req => JSON.stringify(req.body))
 app.use(morgan(':method :url :status :res[content-length] - :response-time ms :content'))
 
 const errorResponse = (res, statusCode, error) =>
