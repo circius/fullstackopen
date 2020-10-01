@@ -12,15 +12,16 @@ app.use(cors())
 morgan.token('content', (req, res) => JSON.stringify(req.body))
 app.use(morgan(':method :url :status :res[content-length] - :response-time ms :content'))
 
-app.get('/api/persons', (req, res) => {
-    Entry.find({})
-        .then(result => res.json(result))
-})
-
 const errorResponse = (res, statusCode, error) =>
     res.status(statusCode).json({ 'error': error })
 
-app.post('/api/persons', (req, res) => {
+app.get('/api/persons', (req, res, next) => {
+    Entry.find({})
+        .then(result => res.json(result))
+        .catch(error => next(error))
+})
+
+app.post('/api/persons', (req, res, next) => {
     const person = req.body
 
     const validPersonP = person => person.name && person.number
@@ -32,27 +33,26 @@ app.post('/api/persons', (req, res) => {
     const entry = new Entry(person)
     entry.save()
         .then(result => res.json(result))
+        .catch(error => next(error))
 })
 
-app.get('/api/persons/:id', (req, res) => {
+app.get('/api/persons/:id', (req, res, next) => {
     const id = req.params.id
     Entry.findById(id)
-        .then(person => res.json(person))
-        .catch(error => {
-            console.log('unknown error: ', error.message)
-            res.status(204).end()
-        })
+        .then(person => 
+            person ? res.json(person) : res.status(404).end())
+        .catch(error => next(error))
 })
 
-app.delete('/api/persons/:id', (req, res) => {
+
+app.delete('/api/persons/:id', (req, res, next) => {
     const id = req.params.id
     Entry.findByIdAndDelete(id)
         .then(res.status(204).end())
-        .catch(error => console.log('database error: ', error)
-        )
+        .catch(error => next(error))
 })
 
-app.get('/info', (req, res) => {
+app.get('/info', (req, res, next) => {
     Entry.find({})
         .then(result => {
             const phonebookEntries = result.length
@@ -60,10 +60,23 @@ app.get('/info', (req, res) => {
             const timestamp = new Date()
             res.send(`${info}<br /><br />${timestamp}`)
         })
-        .catch(error => console.log('unknown error: ', error.message))
+        .catch(error => next(error))
 })
+
+const errorHandler = (error, req, res, next) => {
+    console.error(error.message)
+
+    if (error.name === 'CastError') {
+        return errorResponse(res, 400, 'malformed id')
+    }
+
+    next(error)
+}
+app.use(errorHandler)
 
 const PORT = process.env.PORT || 3001
 app.listen(PORT, () => {
     console.log('Server running on port ', PORT)
 })
+
+
