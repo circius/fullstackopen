@@ -38,6 +38,7 @@ app.post('/api/persons', (req, res, next) => {
 
 app.get('/api/persons/:id', (req, res, next) => {
     const id = req.params.id
+    console.log(`getting person with id ${id}`)
     Entry.findById(id)
         .then(person => 
             person ? res.json(person) : res.status(404).end())
