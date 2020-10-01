@@ -53,8 +53,10 @@ const App = () => {
           setPersons(persons.map(
             (person) => person.id === returnedPerson.id ? returnedPerson : person))
           setTellFlashMessage(`updated the number of ${returnedPerson.name}`)
-          setTimeout(setTellFlashMessage(null), flashTimeout)})
+          setTimeout(setTellFlashMessage(null), flashTimeout)
+        })
         .catch(error => {
+          console.error(error)
           setWarnFlashMessage('something went wrong')
           setTimeout(() => setWarnFlashMessage(null), flashTimeout)
          })
