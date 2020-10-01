@@ -1,4 +1,5 @@
 const mongoose = require('mongoose')
+const uniqueValidator = require('mongoose-unique-validator')
 
 const mongoURI = process.env.MONGODB_URI
 console.log(`connecting to ${mongoURI}`)
@@ -8,9 +9,18 @@ mongoose.connect(mongoURI, { useNewUrlParser: true, useUnifiedTopology: true, us
     .catch(error => console.log('error connecting to MongoDB:', error.message))
 
 const entrySchema = new mongoose.Schema({
-    name: String,
-    number: String
+    name: {
+        type: String,
+        unique: true,
+        required:true
+    },
+    number: {
+        type: String,
+        required:true,
+    }
 })
+
+entrySchema.plugin(uniqueValidator)
 
 entrySchema.set('toJSON', {
     transform: (document, returnedObject) => {

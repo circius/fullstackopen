@@ -77,6 +77,8 @@ const errorHandler = (error, req, res, next) => {
 
     if (error.name === 'CastError') {
         return errorResponse(res, 400, 'malformed id')
+    } else if (error.name === 'ValidationError') {
+        return errorResponse(res, 400, 'validation error')
     }
 
     next(error)
