@@ -40,7 +40,7 @@ app.get('/api/persons/:id', (req, res, next) => {
   const id = req.params.id
   console.log(`getting person with id ${id}`)
   Entry.findById(id)
-    .then(person => 
+    .then(person =>
       person ? res.json(person) : res.status(404).end())
     .catch(error => next(error))
 })
@@ -48,7 +48,7 @@ app.get('/api/persons/:id', (req, res, next) => {
 app.put('/api/persons/:id', (req, res, next) => {
   const id = req.params.id
   const person = req.body
-  Entry.findByIdAndUpdate(id, person, {new:true, runValidators: true})
+  Entry.findByIdAndUpdate(id, person, { new:true, runValidators: true })
     .then(result => res.json(result))
     .catch(error => next(error))
 })
