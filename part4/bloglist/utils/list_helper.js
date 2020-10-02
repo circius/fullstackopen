@@ -28,7 +28,7 @@ const mostBlogs = blogs => {
     if (authors.length === 0) {
       return undefined
     } else {
-    const mostProlific = Object.keys(countObj).reduce(
+    const mostProlific = authors.reduce(
       (acc, cur) => countObj.cur > countObj.acc ? cur : acc
     )
     return {
@@ -36,13 +36,43 @@ const mostBlogs = blogs => {
       blogs: countObj[mostProlific]
     }
   }}
-
   return getMostBlogs(blogCountAcc(blogs, {}))
-  
+}
+
+const mostLikes = blogs => {
+  const likesCountAcc = (blogs, acc) => {
+    if (blogs.length === 0) {
+      return acc
+    } else {
+      const blog = blogs[0]
+      const {author, likes} = blog
+      const newAcc = {
+        ...acc,
+        [author]: acc.[author] === undefined ? likes : acc.[author] + likes
+      }
+     return likesCountAcc(blogs.slice(1), newAcc) 
+    }
+  }
+  const getMostLiked = countObj => {
+    const authors = Object.keys(countObj)
+    if (authors.length === 0) {
+      return undefined
+    } else {
+      const mostLiked = authors.reduce(
+        (acc, cur) => countObj.cur > countObj.acc ? cur: acc
+      )
+    return {
+      author: mostLiked,
+      likes: countObj[mostLiked]
+    }
+    }
+  }
+  return getMostLiked(likesCountAcc(blogs, {}))
 }
 
 module.exports = {
   totalLikes,
   favoriteBlog,
-  mostBlogs
+  mostBlogs,
+  mostLikes
 }
