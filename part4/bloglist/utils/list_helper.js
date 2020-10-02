@@ -9,7 +9,40 @@ const favoriteBlog = blogs =>
     (acc, cur) => cur.likes > acc.likes ? cur : acc
 )
 
+const mostBlogs = blogs => {
+  const blogCountAcc = (blogs, acc) => {
+    if (blogs.length === 0) {
+      return acc
+    } else {
+      const blog = blogs[0]
+      const author = blog.author
+      const newAcc = {
+        ...acc,
+        [author]: acc.[author] === undefined ? 1 : acc.[author] + 1
+      }      
+      return blogCountAcc(blogs.slice(1), newAcc)
+    }  
+  }
+  const getMostBlogs = countObj => {
+    const authors = Object.keys(countObj)
+    if (authors.length === 0) {
+      return undefined
+    } else {
+    const mostProlific = Object.keys(countObj).reduce(
+      (acc, cur) => countObj.cur > countObj.acc ? cur : acc
+    )
+    return {
+      author: mostProlific,
+      blogs: countObj[mostProlific]
+    }
+  }}
+
+  return getMostBlogs(blogCountAcc(blogs, {}))
+  
+}
+
 module.exports = {
   totalLikes,
-  favoriteBlog
+  favoriteBlog,
+  mostBlogs
 }

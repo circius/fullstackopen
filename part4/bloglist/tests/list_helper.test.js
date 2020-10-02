@@ -50,3 +50,19 @@ describe('favorite blog', () => {
   test('of longer bloglist is the most liked', () => 
     expect(listHelper.favoriteBlog(blogs3)).toEqual(blog2))
 })
+
+describe('most blogs', () => {
+  test('of empty bloglist is undefined', () =>
+    expect(listHelper.mostBlogs(blogs0)).toBe(undefined))
+  test('of bloglist of 1 is the solitary member', () => 
+    expect(listHelper.mostBlogs(blogs1)).toEqual(
+      {
+        author: "whoever",
+        blogs: 1}))
+  test('of longer bloglist is most prolific author', () =>
+    expect(listHelper.mostBlogs(blogs3)).toEqual(
+      {
+        author: 'whoever',
+        blogs: 2
+      }))
+})
