@@ -8,6 +8,7 @@ notesRouter.get('/', async (_, response) => {
 
 notesRouter.post('/', async (request, response) => {
   const blog = await new Blog(request.body)
+  blog.save()
   response.status(201).json(blog)
 })
 
