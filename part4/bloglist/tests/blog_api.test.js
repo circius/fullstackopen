@@ -14,11 +14,16 @@ beforeEach(async () => {
   }
 })
 
-test('blogs are returned as json', async () => {
-  await api
-    .get('/api/blogs')
-    .expect(200)
-    .expect('Content-Type', /application\/json/)
+describe('can get list of blogs', () => {
+  test('blogs are returned as json', async () => {
+    const response = await api.get('/api/blogs')
+    expect(response.status).toBe(200)
+    expect(response.type).toBe('application/json')
+  })
+  test('returns right number of blogs', async () => {
+    const response = await api.get('/api/blogs')
+    expect(response.body).toHaveLength(3)
+  })
 })
 
 afterAll(() => {
