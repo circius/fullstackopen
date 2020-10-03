@@ -6,8 +6,8 @@ notesRouter.get('/', async (_, response) => {
   response.json(blogs)
 })
 
-notesRouter.post('/', async (request, response) => {
-  const blog = await new Blog(request.body)
+notesRouter.post('/', (request, response) => {
+  const blog = new Blog(request.body)
   blog.save()
   response.status(201).json(blog)
 })

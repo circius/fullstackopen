@@ -54,6 +54,17 @@ describe('can POST new blogs', () => {
     expect(getBlogs.body.find(
       (blog) => blog.author === 'oedipe')).toBeDefined
   })
+  test('the field `likes` is automatically generated if absent', async () => {
+    const newBlog = new Blog({
+      title: 'tartarus theme',
+      author: 'oedipe'
+    })
+    const postResponse = await api
+      .post('/api/blogs')
+      .send(newBlog)
+    console.log('postResponse.body:', postResponse.body)
+    expect(postResponse.body.likes).toBeDefined()
+  })
 
 })
 
