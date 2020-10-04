@@ -105,6 +105,18 @@ describe('can interact with individual blogs; for instance: ', () => {
       .get('/api/blogs')
     expect(blogsResponse.body).toHaveLength(2)
   })
+  test('can PUT new details for an existing blog', async () => {
+    const id = blog1._id
+    await api
+      .put(`/api/blogs/${id}`)
+      .send({ title: 'something new' })
+      .expect(204)
+    const response = await api
+      .get(`/api/blogs/${id}`)
+      .expect(200)
+    const blog = response.body
+    expect(blog.title).toBe('something new')
+  })
 })
 
 afterAll(() => {
