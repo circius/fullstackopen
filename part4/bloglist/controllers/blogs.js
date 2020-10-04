@@ -6,10 +6,20 @@ notesRouter.get('/', async (_, response) => {
   response.json(blogs)
 })
 
-notesRouter.post('/', (request, response) => {
-  const blog = new Blog(request.body)
-  blog.save()
-  response.status(201).json(blog)
+notesRouter.post('/', async (request, response, next) => {
+  const body = request.body
+  const blog = new Blog({
+    title: body.title,
+    author: body.author,
+    url: body.url,
+    likes: body.likes
+  })
+  try {
+    const savedBlog = await blog.save()
+    response.status(201).json(savedBlog)
+  } catch(exception) {
+    next(exception)
+  }
 })
 
 module.exports = notesRouter
