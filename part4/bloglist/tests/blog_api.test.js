@@ -30,7 +30,7 @@ describe('blogs are correctly formatted', () => {
   test('blogs have `id` not `_id`', async () => {
     const response = await api.get('/api/blogs')
     const someBlog = response.body[0]
-    console.log('someBlog:', someBlog)
+
     expect(someBlog.id).toBeDefined()
     expect(someBlog._id).toBeUndefined()
   })
@@ -38,12 +38,12 @@ describe('blogs are correctly formatted', () => {
 
 describe('can POST new blogs', () => {
   test('POST $blog to /api/blogs adds $blog to db', async () => {
-    const newBlog = new Blog({
+    const newBlog = {
       title: 'tartarus theme',
       author: 'oedipe',
       url: 'last.gr',
       likes: 0,
-    })
+    }
     const postResponse = await api
       .post('/api/blogs')
       .send(newBlog)
@@ -55,17 +55,37 @@ describe('can POST new blogs', () => {
       (blog) => blog.author === 'oedipe')).toBeDefined
   })
   test('the field `likes` is automatically generated if absent', async () => {
-    const newBlog = new Blog({
+    const newBlog = {
       title: 'tartarus theme',
+      url:'https://whatever.se',
       author: 'oedipe'
-    })
+    }
     const postResponse = await api
       .post('/api/blogs')
       .send(newBlog)
-    console.log('postResponse.body:', postResponse.body)
     expect(postResponse.body.likes).toBeDefined()
   })
+  test('POSTing a blog without a `url` results in status 400', async () => {
+    const newBlogNoUrl = {
+      title: 'marvellous',
+      author: 'forgotten'
+    }
+    const response = await api
+      .post('/api/blogs')
+      .send(newBlogNoUrl)
+    expect(response.status).toBe(400)
+  })
+  test('POSTing a blog without a `title` results in status 400', async () => {
+    const newBlogNoTitle = {
+      url:'https://whatever.hr',
+      author: 'forgotten'
+    }
+    const response = await api
+      .post('/api/blogs')
+      .send(newBlogNoTitle)
 
+    expect(response.status).toBe(400)
+  })
 })
 
 afterAll(() => {
