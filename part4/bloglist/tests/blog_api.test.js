@@ -70,21 +70,40 @@ describe('can POST new blogs', () => {
       title: 'marvellous',
       author: 'forgotten'
     }
-    const response = await api
+    await api
       .post('/api/blogs')
       .send(newBlogNoUrl)
-    expect(response.status).toBe(400)
+      .expect(400)
   })
   test('POSTing a blog without a `title` results in status 400', async () => {
     const newBlogNoTitle = {
       url:'https://whatever.hr',
       author: 'forgotten'
     }
-    const response = await api
+    await api
       .post('/api/blogs')
       .send(newBlogNoTitle)
+      .expect(400)
+  })
+})
 
-    expect(response.status).toBe(400)
+describe('can interact with individual blogs; for instance: ', () => {
+  test('can GET an individual blog', async () => {
+    const id = blog1._id
+    const response = await api
+      .get(`/api/blogs/${id}`)
+      .expect(200)
+      .expect('Content-Type', /application\/json/)
+    expect(response.body.title).toBe(blog1.title)
+  })
+  test('can DELETE an individual blog', async () => {
+    const id = blog1._id
+    await api
+      .delete(`/api/blogs/${id}`)
+      .expect(204)
+    const blogsResponse = await api
+      .get('/api/blogs')
+    expect(blogsResponse.body).toHaveLength(2)
   })
 })
 
