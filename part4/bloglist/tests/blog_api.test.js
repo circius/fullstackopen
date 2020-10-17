@@ -44,7 +44,7 @@ describe('can POST new blogs', () => {
       url: 'last.gr',
       likes: 0,
     }
-    const postResponse = await api
+    await api
       .post('/api/blogs')
       .send(newBlog)
       .expect(201)

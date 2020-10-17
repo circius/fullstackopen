@@ -2,7 +2,7 @@ const errorHandler = (error, _, res, next) => {
   const errorResponse = (res, statusCode, error) =>
     res.status(statusCode).json({ 'error': error })
 
-    process.env.NODE_ENV !== 'test' ? 
+  process.env.NODE_ENV !== 'test' ?
     console.error('error: ', error.message) :
     null
 
