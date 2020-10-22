@@ -1,9 +1,8 @@
-const mongoose = require('mongoose')
 const supertest = require('supertest')
 
 const app = require('../app')
 const User = require('../models/user')
-const {user0, user1} = require('./user_td')
+const { user0, user1 } = require('./user_td')
 
 const api = supertest(app)
 
@@ -21,7 +20,7 @@ describe('starting from a state where we have no users,', () => {
     expect(response.body).toHaveLength(0)
   })
   test('we can create a new user', async () => {
-    const response = await api
+    await api
       .post('/api/users')
       .send(user0)
       .expect(201)
@@ -60,13 +59,13 @@ describe('when there is inititally one user in db', () => {
   test('attempting to create a user without a username fails', async () => {
     await api
       .post('/api/users')
-      .send({password: 'blah', name:'blah'})
+      .send({ password: 'blah', name:'blah' })
       .expect(400)
   })
   test('attempting to create a user without a password fails', async() => {
     await api
       .post('/api/users')
-      .send({username:'blah', name:'blah'})
+      .send({ username:'blah', name:'blah' })
       .expect(400)
   })
 
