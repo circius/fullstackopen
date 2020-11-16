@@ -2,7 +2,9 @@ const mongoose = require('mongoose')
 const supertest = require('supertest')
 const app = require('../app')
 const Blog = require('../models/blog')
+const User = require('../models/user')
 const { blog1, blogs3 } = require('./blog_td')
+const { user0 } = require('./user_td')
 
 const api = supertest(app)
 
@@ -12,6 +14,9 @@ beforeEach(async () => {
     let model = new Blog(blog)
     await model.save()
   }
+  await User.deleteMany({})
+  let user0Model = new User(user0)
+  await user0Model.save()
 })
 
 describe('can get list of blogs', () => {
@@ -40,7 +45,6 @@ describe('can POST new blogs', () => {
   test('POST $blog to /api/blogs adds $blog to db', async () => {
     const newBlog = {
       title: 'tartarus theme',
-      author: 'oedipe',
       url: 'last.gr',
       likes: 0,
     }
@@ -52,13 +56,12 @@ describe('can POST new blogs', () => {
     const getBlogs = await api.get('/api/blogs')
     expect(getBlogs.body).toHaveLength(4)
     expect(getBlogs.body.find(
-      (blog) => blog.author === 'oedipe')).toBeDefined
+      (blog) => blog.title === newBlog.title)).author.toEqual('Jack Sprat')
   })
   test('the field `likes` is automatically generated if absent', async () => {
     const newBlog = {
       title: 'tartarus theme',
       url:'https://whatever.se',
-      author: 'oedipe'
     }
     const postResponse = await api
       .post('/api/blogs')
@@ -68,7 +71,6 @@ describe('can POST new blogs', () => {
   test('POSTing a blog without a `url` results in status 400', async () => {
     const newBlogNoUrl = {
       title: 'marvellous',
-      author: 'forgotten'
     }
     await api
       .post('/api/blogs')
