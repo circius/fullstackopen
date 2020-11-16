@@ -39,7 +39,7 @@ const mostBlogs = blogs => {
   return getMostBlogs(blogCountAcc(blogs, {}))
 }
 
-const mostLikes = blogs => {
+const mostLikes = blogs => {  
   const likesCountAcc = (blogs, acc) => {
     if (blogs.length === 0) {
       return acc
@@ -59,7 +59,7 @@ const mostLikes = blogs => {
       return undefined
     } else {
       const mostLiked = authors.reduce(
-        (acc, cur) => countObj.cur > countObj.acc ? cur: acc
+        (acc, cur) => countObj.cur > countObj.acc ? acc : cur
       )
       return {
         author: mostLiked,

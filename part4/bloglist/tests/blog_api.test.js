@@ -4,7 +4,7 @@ const app = require('../app')
 const Blog = require('../models/blog')
 const User = require('../models/user')
 const { blog1, blogs3 } = require('./blog_td')
-const { user0 } = require('./user_td')
+const { users2 } = require('./user_td')
 
 const api = supertest(app)
 
@@ -15,8 +15,10 @@ beforeEach(async () => {
     await model.save()
   }
   await User.deleteMany({})
-  let user0Model = new User(user0)
-  await user0Model.save()
+  for (const user of users2) {
+    let user0Model = new User(user)
+    await user0Model.save()
+  }
 })
 
 describe('can get list of blogs', () => {
@@ -54,9 +56,10 @@ describe('can POST new blogs', () => {
       .expect(201)
       .expect('Content-Type', /application\/json/)
     const getBlogs = await api.get('/api/blogs')
+    
     expect(getBlogs.body).toHaveLength(4)
     expect(getBlogs.body.find(
-      (blog) => blog.title === newBlog.title)).author.toEqual('Jack Sprat')
+      (blog) => blog.title === newBlog.title)).toBeDefined
   })
   test('the field `likes` is automatically generated if absent', async () => {
     const newBlog = {
