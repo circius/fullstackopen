@@ -9,6 +9,11 @@ const getAllBlogs = async api => {
   return blogs
 }
 
+const getAllUsers = async api => {
+  const users = await getEndpointBody('/api/users', api)
+  return users
+}
+
 const getSomeBlog = async api => {
   const blogs = await getAllBlogs(api)
   return blogs.pop()
@@ -19,4 +24,4 @@ const getSomeBlogID = async api => {
   return blog.id
 }
 
-module.exports = { getEndpointBody, getAllBlogs, getSomeBlog, getSomeBlogID }
+module.exports = { getEndpointBody, getAllBlogs, getSomeBlog, getSomeBlogID, getAllUsers}

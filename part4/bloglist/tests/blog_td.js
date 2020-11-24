@@ -1,20 +1,18 @@
-const {user0, user1} = require('./user_td')
-
 const blog1 = {
   title: 'whatever',
-  author: user1.id,
+  author: undefined,
   url: 'example.com',
   likes: 0,
 }
 const blog2 = {
   title: 'another',
-  author: user0.id,
+  author: undefined,
   url: 'beispiel.com',
   likes: 3,
 }
 const blog3 = {
   title: 'last',
-  author: user1.id,
+  author: undefined,
   url: 'example.fr',
   likes: 2,
 }

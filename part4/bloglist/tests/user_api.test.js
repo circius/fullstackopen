@@ -2,7 +2,8 @@ const supertest = require('supertest')
 
 const app = require('../app')
 const User = require('../models/user')
-const { user0, user1 } = require('./user_td')
+const { user0, user1, users2, user2 } = require('./user_td')
+const th = require('./test_helpers')
 
 const api = supertest(app)
 
@@ -26,11 +27,10 @@ describe('starting from a state where we have no users,', () => {
       .expect(201)
       .expect('Content-Type', /application\/json/)
 
-    const allUsers = await api.get('/api/users')
-    expect(allUsers.body).toHaveLength(1)
+    const allUsers = await th.getAllUsers(api)
+    expect(allUsers).toHaveLength(1)
 
   })
-
 })
 
 describe('when there is inititally one user in db', () => {
@@ -45,8 +45,8 @@ describe('when there is inititally one user in db', () => {
       .expect(201)
       .expect('Content-Type', /application\/json/)
 
-    const allUsers = await api.get('/api/users')
-    expect(allUsers.body).toHaveLength(2)
+    const allUsers = await th.getAllUsers(api)
+    expect(allUsers).toHaveLength(2)
   })
 
   test('attempting to create a user with the same username fails', async () => {
@@ -68,5 +68,21 @@ describe('when there is inititally one user in db', () => {
       .send({ username:'blah', name:'blah' })
       .expect(400)
   })
+})
 
+describe("when we have our test data fully instantiated", () => {
+  beforeEach(async () => {
+    await User.deleteMany({})
+    for (const user of users2) {
+      const model = new User(user)
+      await model.save()
+    }
+  })
+  test('a user entry shows the blogs authored by the user', async () => {
+  const allUsers = await th.getAllUsers(api)
+  const jerome = allUsers.find(user => user.name === user1.name)
+  expect(jerome.blogs).toHaveLength(2)
+  const hanna = allUsers.find(user => user.name === user0.name)
+  expect(hanna.blogs).toHaveLength(1)
+})
 })
