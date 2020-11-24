@@ -24,4 +24,9 @@ const getSomeBlogID = async api => {
   return blog.id
 }
 
-module.exports = { getEndpointBody, getAllBlogs, getSomeBlog, getSomeBlogID, getAllUsers}
+const getUserByName = async (api,name) => {
+  const users = await getAllUsers(api)
+  return users.find(user => user.name === name)
+}
+
+module.exports = { getEndpointBody, getAllBlogs, getSomeBlog, getSomeBlogID, getAllUsers, getUserByName}

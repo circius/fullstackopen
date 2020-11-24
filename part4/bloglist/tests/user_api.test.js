@@ -2,7 +2,9 @@ const supertest = require('supertest')
 
 const app = require('../app')
 const User = require('../models/user')
+const Blog = require('../models/blog')
 const { user0, user1, users2, user2 } = require('./user_td')
+const {blogs3 } = require('./blog_td')
 const th = require('./test_helpers')
 
 const api = supertest(app)
@@ -68,21 +70,4 @@ describe('when there is inititally one user in db', () => {
       .send({ username:'blah', name:'blah' })
       .expect(400)
   })
-})
-
-describe("when we have our test data fully instantiated", () => {
-  beforeEach(async () => {
-    await User.deleteMany({})
-    for (const user of users2) {
-      const model = new User(user)
-      await model.save()
-    }
-  })
-  test('a user entry shows the blogs authored by the user', async () => {
-  const allUsers = await th.getAllUsers(api)
-  const jerome = allUsers.find(user => user.name === user1.name)
-  expect(jerome.blogs).toHaveLength(2)
-  const hanna = allUsers.find(user => user.name === user0.name)
-  expect(hanna.blogs).toHaveLength(1)
-})
 })

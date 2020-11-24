@@ -111,7 +111,7 @@ describe('can interact with individual blogs; for instance: ', () => {
     expect(blogsResponse.body).toHaveLength(2)
   })
   test('can PUT new details for an existing blog', async () => {
-    const someBlogID = await th.getSomeBlogID(api)    
+    const someBlogID = await th.getSomeBlogID(api)
     await api
       .put(`/api/blogs/${someBlogID}`)
       .send({ title: 'something new' })

@@ -4,18 +4,21 @@ const user0 = {
   'name': 'Jack Sprat',
   'username': 'jsprat',
   'password': 'blahblah',
+  'blogs': []
 }
 
 const user1 = {
   'name': 'Jerome Frump',
   'username': 'lonely_flaubert',
   'password': 'an excellent password that should be accepted even though it is natural language',
+  'blogs': []
 }
 
 const user2 = {
   'name': 'Hanna Mckenna',
   'username': 'mckenna',
   'password': 'EHanx0d-=-2',
+  'blogs': []
 }
 
 const users0 = []
