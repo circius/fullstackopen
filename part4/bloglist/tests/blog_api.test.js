@@ -3,7 +3,7 @@ const supertest = require('supertest')
 const app = require('../app')
 const Blog = require('../models/blog')
 const User = require('../models/user')
-const { blog1, blogs3 } = require('./blog_td')
+const { blogs3 } = require('./blog_td')
 const { users2 } = require('./user_td')
 const th = require ('./test_helpers')
 
@@ -55,7 +55,7 @@ describe('can POST new blogs', () => {
       .expect(201)
       .expect('Content-Type', /application\/json/)
     const blogs = await th.getAllBlogs(api)
-    
+
     expect(blogs).toHaveLength(4)
     expect(blogs.find(
       (blog) => blog.title === newBlog.title)).toBeDefined
@@ -94,7 +94,7 @@ describe('can POST new blogs', () => {
 describe('can interact with individual blogs; for instance: ', () => {
   test('can GET an individual blog', async () => {
     const someBlogID = await th.getSomeBlogID(api)
-    const response = await api 
+    const response = await api
       .get(`/api/blogs/${someBlogID}`)
       .expect(200)
       .expect('Content-Type', /application\/json/)

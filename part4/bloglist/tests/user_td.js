@@ -1,4 +1,4 @@
-const {blog1, blog2, blog3 } = require('./blog_td.js')
+
 
 const user0 = {
   'name': 'Jack Sprat',

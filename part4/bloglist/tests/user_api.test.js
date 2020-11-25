@@ -2,9 +2,9 @@ const supertest = require('supertest')
 
 const app = require('../app')
 const User = require('../models/user')
-const Blog = require('../models/blog')
-const { user0, user1, users2, user2 } = require('./user_td')
-const {blogs3 } = require('./blog_td')
+
+const { user0, user1 } = require('./user_td')
+
 const th = require('./test_helpers')
 
 const api = supertest(app)

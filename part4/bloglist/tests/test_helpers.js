@@ -29,4 +29,4 @@ const getUserByName = async (api,name) => {
   return users.find(user => user.name === name)
 }
 
-module.exports = { getEndpointBody, getAllBlogs, getSomeBlog, getSomeBlogID, getAllUsers, getUserByName}
+module.exports = { getEndpointBody, getAllBlogs, getSomeBlog, getSomeBlogID, getAllUsers, getUserByName }

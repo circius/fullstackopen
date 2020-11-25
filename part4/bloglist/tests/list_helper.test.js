@@ -1,6 +1,5 @@
 const listHelper = require('../utils/list_helper')
 const { blog1, blog2, blogs0, blogs1, blogs2, blogs3 } = require('./blog_td')
-const {user0, user1, user3 } = require('./user_td')
 
 describe('total likes', () => {
   test('of empty list is zero', () => {
@@ -23,17 +22,17 @@ describe('most blogs', () => {
   test('of empty bloglist is undefined', () => expect(listHelper.mostBlogs(blogs0)).toBe(undefined))
   test('of bloglist of 1 is the solitary member', () => expect(listHelper.mostBlogs(blogs1).blogs)
     .toEqual(1))
-      // difficulties arising from move to identifying author my mongoosedb ID.
+  // difficulties arising from move to identifying author my mongoosedb ID.
 
-    // test('of longer bloglist is most prolific author', () => expect(listHelper.mostBlogs(blogs3).blogs)
+  // test('of longer bloglist is most prolific author', () => expect(listHelper.mostBlogs(blogs3).blogs)
   // .toEqual(2))
 })
 
 describe('most likes', () => {
   test('of empty bloglist is undefined', () => expect(listHelper.mostLikes(blogs0)).toBe(undefined))
   test('of bloglist of 1 is the solitary member', () => expect(listHelper.mostLikes(blogs1).likes)
-  .toEqual(0))
-      // difficulties arising from move to identifying author my mongoosedb ID.
+    .toEqual(0))
+  // difficulties arising from move to identifying author my mongoosedb ID.
 
   // test('of longer bloglist is most liked author', () => expect(listHelper.mostLikes(blogs3).likes)
   // .toEqual(3))

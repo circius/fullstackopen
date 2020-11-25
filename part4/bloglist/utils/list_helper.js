@@ -39,7 +39,7 @@ const mostBlogs = blogs => {
   return getMostBlogs(blogCountAcc(blogs, {}))
 }
 
-const mostLikes = blogs => {  
+const mostLikes = blogs => {
   const likesCountAcc = (blogs, acc) => {
     if (blogs.length === 0) {
       return acc
