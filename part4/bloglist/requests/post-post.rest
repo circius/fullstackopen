@@ -1,9 +1,9 @@
 POST http://localhost:3003/api/blogs
 Content-Type: application/json
-Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InN0b21wMiIsImlkIjoiNWZiZDUwODRkMzFmMzY2YzA4Mjg0NjlkIiwiaWF0IjoxNjA2MzA3NDY0fQ.BO20i9gAFyVGjVCOZIMzuo7lpT2innm9cCH1CSzHJ0M
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im1ja2VubmEiLCJpZCI6IjVmYmU5ODZiNmMxYjMzZTgwODA1OGZhNyIsImlhdCI6MTYwNjQ4MDEwN30.SlD737Mo-xbPbwZuxbvPIR4Tu8XTi_f8fFn9tOJ5bd4
 
 {
-  "title": "whatever",
+  "title": "hanna second post",
   "url": "example.com",
   "likes": 0
 }

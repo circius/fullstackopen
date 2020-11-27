@@ -5,16 +5,28 @@ const Blog = require('../models/blog')
 const User = require('../models/user')
 
 const getTokenFrom = request => {
-  const authorization = request.get('authorization')
+  const authorization = request.get('Authorization')
   if (authorization && authorization.toLowerCase().startsWith('bearer ')) {
     return authorization.substring(7)
   }
   return null
 }
 
-blogsRouter.get('/', async (_, response) => {
-  const blogs = await Blog.find({}).populate('author')
-  response.json(blogs)
+blogsRouter.get('/', async (request, response) => {
+  const token = getTokenFrom(request)
+
+  if (!token) {
+    return response.status(401).json({ error: 'token missing' })
+  }
+  try {
+    const decodedToken = jwt.verify(token, process.env.SECRET)
+    const allBlogs = await Blog.find({}).populate('author')
+    const userBlogs = allBlogs.filter(blog => blog.author.username === decodedToken.username)
+    return response.json(userBlogs)
+  } catch (exception) {
+    console.log(`${exception}: ${token} is invalid JWT`);
+    return response.status(400).json({ error: 'malformed token' })
+  }
 })
 
 blogsRouter.post('/', async (request, response) => {
@@ -22,7 +34,7 @@ blogsRouter.post('/', async (request, response) => {
   const token = getTokenFrom(request)
 
   if (!token) {
-    return response.status(401).json({ error : 'token missing' })
+    return response.status(401).json({ error: 'token missing' })
   }
   const decodedToken = jwt.verify(token, process.env.SECRET)
 
@@ -62,7 +74,7 @@ blogsRouter.delete('/:id', async (request, response) => {
 blogsRouter.put('/:id', async (request, response) => {
   const id = request.params.id
   const update = request.body
-  await Blog.findByIdAndUpdate(id, update, { new:true, runValidators: true })
+  await Blog.findByIdAndUpdate(id, update, { new: true, runValidators: true })
   response.status(204).end()
 })
 
