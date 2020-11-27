@@ -3,7 +3,7 @@ import React, { useState } from 'react'
 import loginService from '../services/login'
 
 
-const Login = ({ setUser, setUserCookie }) => {
+const Login = ({ doLogin, warn }) => {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
 
@@ -15,13 +15,10 @@ const Login = ({ setUser, setUserCookie }) => {
         username, password
       })
 
-      const userJSON = JSON.stringify(user)
-      setUser(user)
-      setUserCookie(userJSON)
-
-      console.log('logged in!');
+      doLogin(user)
 
     } catch (exception) {
+      warn('login failed...')
       console.log('exception:', exception)
       console.log('failed login!');
     }

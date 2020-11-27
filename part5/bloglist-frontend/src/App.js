@@ -3,12 +3,17 @@ import Blog from './components/Blog'
 import Login from './components/Login'
 import LogoutButton from './components/LogoutButton'
 import NewBlogForm from './components/NewBlogForm'
+import { WarnFlash, TellFlash } from './components/Flash'
 import blogService from './services/blogs'
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
   const [user, setUser] = useState(null)
+  const [warnFlashMessage, setWarnFlashMessage] = useState(null)
+  const [tellFlashMessage, setTellFlashMessage] = useState(null)
+
   const userTokenKey = 'loggedBlogUser'
+  const flashTimeout = 3000
 
   useEffect(() => {
     blogService.getAll(user).then(blogs => {
@@ -30,29 +35,54 @@ const App = () => {
   const setUserCookie = userJSON => window.localStorage.setItem(userTokenKey, userJSON)
   const unsetUserCookie = () => window.localStorage.removeItem(userTokenKey)
 
+  const doLogin = incomingUser => {
+    setUser(incomingUser)
+    setUserCookie(JSON.stringify(incomingUser))
+    tell("logged in!")
+    return user
+  }
+
   const doLogout = () => {
     unsetUserCookie()
     setUser(null)
+    tell("logged out")
     return user
+  }
+
+  const tell = message => {
+    setTellFlashMessage(message)
+    setTimeout(x => setTellFlashMessage(null), 3000)
+  }
+
+  const warn = message => {
+    setWarnFlashMessage(message)
+    setTimeout(x => setWarnFlashMessage(null), flashTimeout)
   }
 
   const updateBlogs = newBlog => {
     setBlogs(blogs.concat(newBlog))
+    tell(`added blog ${newBlog.title}`)
   }
 
-  return loggedInP() ? (
+  return (
     <div>
-      <h2>blogs</h2>
-      Hello {user.username}
-      <LogoutButton doLogout={doLogout} />
-      <NewBlogForm user={user} updateBlogs={updateBlogs} />
-      {blogs.map(blog =>
-        <Blog key={blog.id} blog={blog} />
-      )}
-    </div>
-  ) :
-    <Login setUser={setUser} setUserCookie={setUserCookie} />
+      <WarnFlash message={warnFlashMessage} />
+      <TellFlash message={tellFlashMessage} />
+      {loggedInP() ? (
+        <div>
 
+          <h2>blogs</h2>
+      Hello {user.username}
+          <LogoutButton doLogout={doLogout} />
+          <NewBlogForm user={user} updateBlogs={updateBlogs} />
+          {blogs.map(blog =>
+            <Blog key={blog.id} blog={blog} />
+          )}
+        </div>
+      ) :
+        <Login doLogin={doLogin} warn={warn} />}
+    </div>
+  )
 }
 
 export default App
