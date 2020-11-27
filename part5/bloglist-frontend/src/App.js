@@ -26,12 +26,24 @@ const App = () => {
 
   const getUserCookie = () => window.localStorage.getItem(userTokenKey)
   const setUserCookie = userJSON => window.localStorage.setItem(userTokenKey, userJSON)
+  const unsetUserCookie = () => window.localStorage.removeItem(userTokenKey)
+
+  const doLogout = () => {
+    unsetUserCookie()
+    setUser(null)
+    return user
+  }
+  const Logout = ({ doLogout }) => (
+    <button onClick={doLogout}>logout</button>
+  )
+
 
   return loggedInP() ? (
     <div>
       <h2>blogs</h2>
+      <Logout doLogout={doLogout} />
       {blogs.map(blog =>
-        <Blog key={blog.id} blog={blog} user={user.username} />
+        <Blog key={blog.id} blog={blog} />
       )}
     </div>
   ) :

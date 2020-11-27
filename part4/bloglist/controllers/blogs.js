@@ -24,7 +24,7 @@ blogsRouter.get('/', async (request, response) => {
     const userBlogs = allBlogs.filter(blog => blog.author.username === decodedToken.username)
     return response.json(userBlogs)
   } catch (exception) {
-    console.log(`${exception}: ${token} is invalid JWT`);
+    console.log(`${exception}: ${token} is invalid JWT`)
     return response.status(400).json({ error: 'malformed token' })
   }
 })
