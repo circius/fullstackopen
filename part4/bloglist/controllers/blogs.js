@@ -20,13 +20,8 @@ blogsRouter.get('/', async (request, response) => {
   }
   try {
     const decodedToken = jwt.verify(token, process.env.SECRET)
-    console.log('decodedToken:', decodedToken)
-
     const allBlogs = await Blog.find({}).populate('user')
-    console.log('allBlogs:', allBlogs)
-
     const userBlogs = allBlogs.filter(blog => blog.user.username === decodedToken.username)
-    console.log('userBlogs:', userBlogs)
 
     return response.json(userBlogs)
   } catch (exception) {
@@ -38,30 +33,31 @@ blogsRouter.get('/', async (request, response) => {
 blogsRouter.post('/', async (request, response) => {
   const body = request.body
   const token = getTokenFrom(request)
-
   if (!token) {
     return response.status(401).json({ error: 'token missing' })
   }
-  const decodedToken = jwt.verify(token, process.env.SECRET)
 
+  try {
+    const decodedToken = jwt.verify(token, process.env.SECRET)
+    const user = await User.findById(decodedToken.id)
+    const blog = Blog({
+      title: body.title,
+      user: user.id,
+      author: body.author,
+      url: body.url,
+      likes: body.likes
+    })
 
-  if (!decodedToken.id) {
-    return response.status(401).json({ error: 'token invalid' })
+    const savedBlog = await blog.save()
+    user.blogs = user.blogs.concat(savedBlog.id)
+    await user.save()
+
+    response.status(201).json(user.blogs)
+  } catch (exception) {
+    console.log(`${exception}: ${token} is invalid JWT`)
+    return response.status(400).json({ error: 'malformed token' })
   }
-  const user = await User.findById(decodedToken.id)
-  const blog = Blog({
-    title: body.title,
-    user: user.id,
-    author: body.author,
-    url: body.url,
-    likes: body.likes
-  })
 
-  const savedBlog = await blog.save()
-  user.blogs = user.blogs.concat(savedBlog.id)
-  await user.save()
-
-  response.status(201).json(savedBlog)
 
 })
 
