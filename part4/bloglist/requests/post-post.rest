@@ -3,7 +3,8 @@ Content-Type: application/json
 Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im1ja2VubmEiLCJpZCI6IjVmYmU5ODZiNmMxYjMzZTgwODA1OGZhNyIsImlhdCI6MTYwNjQ4MDEwN30.SlD737Mo-xbPbwZuxbvPIR4Tu8XTi_f8fFn9tOJ5bd4
 
 {
-  "title": "hanna second post",
+  "title": "cats",
   "url": "example.com",
+  "author": "frank",
   "likes": 0
 }
