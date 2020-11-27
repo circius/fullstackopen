@@ -13,4 +13,22 @@ const getAll = async (user) => {
   return request.data
 }
 
-export default { getAll }
+const postBlog = async (user, blog) => {
+
+  if (!user) return
+
+  const request = await axios.post(
+    baseUrl,
+    blog,
+    {
+      headers: {
+        'Authorization': `bearer ${user.token}`
+      }
+    }
+  )
+  console.log('request:', request)
+
+  return request.data
+}
+
+export default { getAll, postBlog }

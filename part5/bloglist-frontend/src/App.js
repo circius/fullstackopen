@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react'
 import Blog from './components/Blog'
 import Login from './components/Login'
+import LogoutButton from './components/LogoutButton'
+import NewBlogForm from './components/NewBlogForm'
 import blogService from './services/blogs'
 
 const App = () => {
@@ -22,7 +24,7 @@ const App = () => {
     }
   }, [])
 
-  const loggedInP = () => getUserCookie() !== null || user !== null
+  const loggedInP = () => user !== null
 
   const getUserCookie = () => window.localStorage.getItem(userTokenKey)
   const setUserCookie = userJSON => window.localStorage.setItem(userTokenKey, userJSON)
@@ -33,21 +35,24 @@ const App = () => {
     setUser(null)
     return user
   }
-  const Logout = ({ doLogout }) => (
-    <button onClick={doLogout}>logout</button>
-  )
 
+  const updateBlogs = newBlog => {
+    setBlogs(blogs.concat(newBlog))
+  }
 
   return loggedInP() ? (
     <div>
       <h2>blogs</h2>
-      <Logout doLogout={doLogout} />
+      Hello {user.username}
+      <LogoutButton doLogout={doLogout} />
+      <NewBlogForm user={user} updateBlogs={updateBlogs} />
       {blogs.map(blog =>
         <Blog key={blog.id} blog={blog} />
       )}
     </div>
   ) :
     <Login setUser={setUser} setUserCookie={setUserCookie} />
+
 }
 
 export default App
