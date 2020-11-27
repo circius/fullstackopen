@@ -20,8 +20,14 @@ blogsRouter.get('/', async (request, response) => {
   }
   try {
     const decodedToken = jwt.verify(token, process.env.SECRET)
-    const allBlogs = await Blog.find({}).populate('author')
-    const userBlogs = allBlogs.filter(blog => blog.author.username === decodedToken.username)
+    console.log('decodedToken:', decodedToken)
+
+    const allBlogs = await Blog.find({}).populate('user')
+    console.log('allBlogs:', allBlogs)
+
+    const userBlogs = allBlogs.filter(blog => blog.user.username === decodedToken.username)
+    console.log('userBlogs:', userBlogs)
+
     return response.json(userBlogs)
   } catch (exception) {
     console.log(`${exception}: ${token} is invalid JWT`)
@@ -42,20 +48,26 @@ blogsRouter.post('/', async (request, response) => {
   if (!decodedToken.id) {
     return response.status(401).json({ error: 'token invalid' })
   }
-  const author = await User.findById(decodedToken.id)
+  const user = await User.findById(decodedToken.id)
   const blog = Blog({
     title: body.title,
-    author: author.id,
+    user: user.id,
+    author: body.author,
     url: body.url,
     likes: body.likes
   })
 
   const savedBlog = await blog.save()
-  author.blogs = author.blogs.concat(savedBlog.id)
-  await author.save()
+  user.blogs = user.blogs.concat(savedBlog.id)
+  await user.save()
 
   response.status(201).json(savedBlog)
 
+})
+
+blogsRouter.delete('/', async (_, response) => {
+  await Blog.deleteMany({})
+  response.status(204).end()
 })
 
 blogsRouter.get('/:id', async (request, response) => {

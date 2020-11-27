@@ -1,18 +1,21 @@
 const blog1 = {
   title: 'whatever',
-  author: undefined,
+  author: 'james',
+  user: undefined,
   url: 'example.com',
   likes: 0,
 }
 const blog2 = {
   title: 'another',
-  author: undefined,
+  user: undefined,
+  author: 'john',
   url: 'beispiel.com',
   likes: 3,
 }
 const blog3 = {
   title: 'last',
-  author: undefined,
+  user: undefined,
+  author: 'luke'
   url: 'example.fr',
   likes: 2,
 }
