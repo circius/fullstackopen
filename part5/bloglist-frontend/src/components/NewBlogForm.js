@@ -13,17 +13,19 @@ const NewBlogForm = ({ user, updateBlogs }) => {
     setURL("")
   }
 
-  const clickHandler = event => {
+  const clickHandler = async event => {
     event.preventDefault()
     const newBlog = {
       title: title,
       author: author,
       url: URL
     }
+
     try {
-      const response = blogService.postBlog(user, newBlog)
+      const response = await blogService.postBlog(user, newBlog)
       resetForm()
-      updateBlogs(newBlog)
+      console.log('response', response)
+      updateBlogs(response)
     }
     catch (exception) {
       console.log(exception)

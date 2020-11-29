@@ -52,7 +52,7 @@ blogsRouter.post('/', async (request, response) => {
     user.blogs = user.blogs.concat(savedBlog.id)
     await user.save()
 
-    response.status(201).json(user.blogs)
+    response.status(201).json(savedBlog)
   } catch (exception) {
     console.log(`${exception}: ${token} is invalid JWT`)
     return response.status(400).json({ error: 'malformed token' })
