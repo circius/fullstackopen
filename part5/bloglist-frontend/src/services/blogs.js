@@ -1,34 +1,46 @@
 import axios from 'axios'
 const baseUrl = '/api/blogs'
 
-const getAll = async (user) => {
+let user = {}
 
-  if (!user) return []
+const setUser = newUser => user = newUser
 
-  const request = await axios.get(baseUrl, {
+const userAuthHeader = user => {
+  return {
     headers: {
       'Authorization': `bearer ${user.token}`
     }
-  })
+  }
+}
+
+const getAll = async () => {
+  const request = await axios.get(baseUrl, userAuthHeader(user))
   return request.data
 }
 
-const postBlog = async (user, blog) => {
-
-  if (!user) return
+const postBlog = async (blog) => {
 
   const request = await axios.post(
     baseUrl,
     blog,
-    {
-      headers: {
-        'Authorization': `bearer ${user.token}`
-      }
-    }
+    userAuthHeader(user)
   )
-  console.log('request:', request)
-
   return request.data
 }
 
-export default { getAll, postBlog }
+const bumpLike = async (blog) => {
+
+  const blogUrl = `${baseUrl}/${blog.id}`
+  const update = {
+    id: blog.id,
+    likes: blog.likes + 1
+  }
+  const request = await axios.put(
+    blogUrl,
+    update,
+    userAuthHeader(user)
+  )
+  return request.data
+}
+
+export default { getAll, postBlog, bumpLike, setUser }

@@ -5,7 +5,7 @@ const Blog = require('../models/blog')
 const User = require('../models/user')
 const { blogs3 } = require('./blog_td')
 const { users2 } = require('./user_td')
-const th = require ('./test_helpers')
+const th = require('./test_helpers')
 
 const api = supertest(app)
 
@@ -63,7 +63,7 @@ describe('can POST new blogs', () => {
   test('the field `likes` is automatically generated if absent', async () => {
     const newBlog = {
       title: 'tartarus theme',
-      url:'https://whatever.se',
+      url: 'https://whatever.se',
     }
     const postResponse = await api
       .post('/api/blogs')
@@ -81,7 +81,7 @@ describe('can POST new blogs', () => {
   })
   test('POSTing a blog without a `title` results in status 400', async () => {
     const newBlogNoTitle = {
-      url:'https://whatever.hr',
+      url: 'https://whatever.hr',
       author: 'forgotten'
     }
     await api

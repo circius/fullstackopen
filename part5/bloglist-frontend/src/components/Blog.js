@@ -1,7 +1,8 @@
 import React, { useState } from 'react'
 import ToggleButton from './ToggleButton'
+import blogService from '../services/blogs'
 
-const Blog = ({ blog }) => {
+const Blog = ({ blog, updateBlog }) => {
   const [showDetails, setShowDetails] = useState(false)
 
   const showWhenVisible = {
@@ -18,11 +19,16 @@ const Blog = ({ blog }) => {
     marginBottom: 5
   }
 
-  const BlogInfo = ({ blog }) =>
+  const doLike = async () => {
+    const newBlog = await blogService.bumpLike(blog)
+    updateBlog(blog.id, newBlog)
+  }
+
+  const BlogInfo = ({ blog, doLike }) =>
     (<ul>
-      <li id="likes">likes: {blog.likes} <button onClick={() => null}>like</button></li>
-      <li id="url">{blog.url}</li>
-      <li id="user">{blog.user.username}</li>
+      <li id={`${blog.id}-likes`}>likes: {blog.likes} <button onClick={doLike}>like</button></li>
+      <li id={`${blog.id}-url`}>{blog.url}</li>
+      <li id={`${blog.id}-url`}>{blog.user.username}</li>
     </ul>)
 
   return (
@@ -30,8 +36,7 @@ const Blog = ({ blog }) => {
       { blog.title} - { blog.author}
       <ToggleButton label={showDetails ? 'hide' : 'view'} toggleFunction={toggleVisibility} />
       <div style={showWhenVisible}>
-        whatever
-        <BlogInfo blog={blog} />
+        <BlogInfo blog={blog} doLike={doLike} />
       </div>
     </div >
   )

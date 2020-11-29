@@ -18,16 +18,17 @@ const App = () => {
   const flashTimeout = 3000
 
   useEffect(() => {
-    blogService.getAll(user).then(blogs => {
-      setBlogs(blogs)
-    })
+    if (user) {
+      blogService.getAll(user).then(blogs => {
+        setBlogs(blogs)
+      })
+    }
   }, [user])
 
   useEffect(() => {
     const loggedUserJSON = getUserCookie()
     if (loggedUserJSON) {
-      const cookieUser = JSON.parse(loggedUserJSON)
-      setUser(cookieUser)
+      setUserFromCookie(loggedUserJSON)
     }
   }, [])
 
@@ -37,9 +38,17 @@ const App = () => {
   const setUserCookie = userJSON => window.localStorage.setItem(userTokenKey, userJSON)
   const unsetUserCookie = () => window.localStorage.removeItem(userTokenKey)
 
+  const setUserFromCookie = cookie => {
+    const userInfo = JSON.parse(cookie)
+    setUser(userInfo)
+    blogService.setUser(userInfo)
+    return user
+  }
+
   const doLogin = incomingUser => {
     setUser(incomingUser)
     setUserCookie(JSON.stringify(incomingUser))
+    blogService.setUser(incomingUser)
     tell("logged in!")
     return user
   }
@@ -66,6 +75,13 @@ const App = () => {
     tell(`added blog ${newBlog.title}`)
   }
 
+  const updateBlog = (id, update) => {
+    console.log('updating blog')
+    setBlogs(blogs.map(
+      blog => blog.id === id ? update : blog
+    ))
+  }
+
   return (
     <div>
       <WarnFlash message={warnFlashMessage} />
@@ -81,7 +97,7 @@ const App = () => {
             <NewBlogForm user={user} updateBlogs={updateBlogs} />
           </Togglable>
           {blogs.map(blog =>
-            <Blog key={blog.id} blog={blog} />
+            <Blog key={blog.id} blog={blog} updateBlog={updateBlog} />
           )}
         </div>
       ) :
