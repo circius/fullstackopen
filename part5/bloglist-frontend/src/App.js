@@ -4,6 +4,8 @@ import Login from './components/Login'
 import LogoutButton from './components/LogoutButton'
 import NewBlogForm from './components/NewBlogForm'
 import { WarnFlash, TellFlash } from './components/Flash'
+import Togglable from './components/Togglable'
+
 import blogService from './services/blogs'
 
 const App = () => {
@@ -51,12 +53,12 @@ const App = () => {
 
   const tell = message => {
     setTellFlashMessage(message)
-    setTimeout(x => setTellFlashMessage(null), 3000)
+    setTimeout(() => setTellFlashMessage(null), 3000)
   }
 
   const warn = message => {
     setWarnFlashMessage(message)
-    setTimeout(x => setWarnFlashMessage(null), flashTimeout)
+    setTimeout(() => setWarnFlashMessage(null), flashTimeout)
   }
 
   const updateBlogs = newBlog => {
@@ -74,7 +76,10 @@ const App = () => {
           <h2>blogs</h2>
       Hello {user.username}
           <LogoutButton doLogout={doLogout} />
-          <NewBlogForm user={user} updateBlogs={updateBlogs} />
+
+          <Togglable>
+            <NewBlogForm user={user} updateBlogs={updateBlogs} />
+          </Togglable>
           {blogs.map(blog =>
             <Blog key={blog.id} blog={blog} />
           )}
