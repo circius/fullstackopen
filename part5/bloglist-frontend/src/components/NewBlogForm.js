@@ -33,10 +33,11 @@ const NewBlogForm = ({ user, updateBlogs }) => {
   }
 
   return (
-    <form onSubmit={clickHandler}>
+    <form id="newBlogForm" onSubmit={clickHandler}>
       <div>
         title:
   <input
+          id="title"
           type="text"
           value={title}
           name="Title"
@@ -46,6 +47,7 @@ const NewBlogForm = ({ user, updateBlogs }) => {
       <div>
         author:
 <input
+          id="author"
           type="text"
           value={author}
           name="Author"
@@ -55,6 +57,7 @@ const NewBlogForm = ({ user, updateBlogs }) => {
       <div>
         url:
     <input
+          id="url"
           type="text"
           value={URL}
           name="URL"
