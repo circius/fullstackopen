@@ -54,6 +54,7 @@ blogsRouter.post('/', async (request, response) => {
 
     response.status(201).json(savedBlog)
   } catch (exception) {
+    console.log(body)
     console.log(`${exception}: ${token} is invalid JWT`)
     return response.status(400).json({ error: 'malformed token' })
   }

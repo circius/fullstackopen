@@ -15,14 +15,18 @@ const NewBlogForm = ({ user, updateBlogs }) => {
 
   const clickHandler = async event => {
     event.preventDefault()
+    console.log('handling form')
+
     const newBlog = {
       title: title,
       author: author,
       url: URL
     }
 
+    console.log(newBlog)
+
     try {
-      const response = await blogService.postBlog(user, newBlog)
+      const response = await blogService.postBlog(newBlog)
       resetForm()
       console.log('response', response)
       updateBlogs(response)

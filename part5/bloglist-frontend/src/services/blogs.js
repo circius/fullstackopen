@@ -18,13 +18,15 @@ const getAll = async () => {
   return request.data
 }
 
-const postBlog = async (blog) => {
+const postBlog = async blog => {
 
   const request = await axios.post(
     baseUrl,
     blog,
     userAuthHeader(user)
   )
+  console.log('user in blogService', user)
+  console.log('result of request', request)
   return request.data
 }
 

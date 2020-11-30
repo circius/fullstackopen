@@ -98,7 +98,7 @@ const App = () => {
       Hello {user.username}
           <LogoutButton doLogout={doLogout} />
 
-          <Togglable>
+          <Togglable buttonId='formButton'>
             <NewBlogForm user={user} updateBlogs={updateBlogs} />
           </Togglable>
           <BlogList blogs={blogs} updateBlog={updateBlog} deleteBlog={deleteBlog} user={user} />

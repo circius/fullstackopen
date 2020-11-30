@@ -5,7 +5,7 @@ const ToggleButton = ({ label, toggleFunction }) => (<button onClick={toggleFunc
 
 ToggleButton.propTypes = {
   label: PropTypes.string.isRequired,
-  toggleFunction: PropTypes.func.isRequired
+  toggleFunction: PropTypes.func.isRequired,
 }
 
 export default ToggleButton
