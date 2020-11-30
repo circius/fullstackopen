@@ -50,7 +50,7 @@ const Blog = ({ blog, user, updateBlog, deleteBlog }) => {
     < div style={blogStyle}>
       { blog.title} - { blog.author}
       <ToggleButton label={showDetails ? 'hide' : 'view'} toggleFunction={toggleVisibility} />
-      <div style={showWhenVisible}>
+      <div style={showWhenVisible} className="blogInfo">
         <BlogInfo blog={blog} doLike={doLike} />
       </div>
       {conditionalDeleteButton(user, blog)}
