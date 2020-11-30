@@ -28,6 +28,12 @@ const postBlog = async (blog) => {
   return request.data
 }
 
+const deleteOne = async blog => {
+  const blogUrl = `${baseUrl}/${blog.id}`
+  const request = await axios.delete(blogUrl, userAuthHeader(user))
+  return request.data
+}
+
 const bumpLike = async (blog) => {
 
   const blogUrl = `${baseUrl}/${blog.id}`
@@ -43,4 +49,4 @@ const bumpLike = async (blog) => {
   return request.data
 }
 
-export default { getAll, postBlog, bumpLike, setUser }
+export default { getAll, postBlog, bumpLike, setUser, deleteOne }

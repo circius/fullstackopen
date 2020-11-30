@@ -83,6 +83,10 @@ const App = () => {
     ))
   }
 
+  const deleteBlog = (id) => {
+    setBlogs(blogs.filter(blog => blog.id !== id))
+  }
+
   return (
     <div>
       <WarnFlash message={warnFlashMessage} />
@@ -97,7 +101,7 @@ const App = () => {
           <Togglable>
             <NewBlogForm user={user} updateBlogs={updateBlogs} />
           </Togglable>
-          <BlogList blogs={blogs} updateBlog={updateBlog} />
+          <BlogList blogs={blogs} updateBlog={updateBlog} deleteBlog={deleteBlog} user={user} />
         </div>
       ) :
         <Login doLogin={doLogin} warn={warn} />}
