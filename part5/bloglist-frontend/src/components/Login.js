@@ -30,6 +30,7 @@ const Login = ({ doLogin, warn }) => {
       <div>
         username
       <input
+          id="username"
           type="text"
           value={username}
           name="Username"
@@ -39,13 +40,14 @@ const Login = ({ doLogin, warn }) => {
       <div>
         password
   <input
+          id="password"
           type="text"
           value={password}
           name="Password"
           onChange={({ target }) => setPassword(target.value)}
         />
       </div>
-      <button type="submit">login</button>
+      <button type="submit" id="submit">login</button>
     </form>
   )
 }
