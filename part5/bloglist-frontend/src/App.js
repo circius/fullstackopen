@@ -5,6 +5,7 @@ import LogoutButton from './components/LogoutButton'
 import NewBlogForm from './components/NewBlogForm'
 import { WarnFlash, TellFlash } from './components/Flash'
 import Togglable from './components/Togglable'
+import BlogList from './components/BlogList'
 
 import blogService from './services/blogs'
 
@@ -96,9 +97,7 @@ const App = () => {
           <Togglable>
             <NewBlogForm user={user} updateBlogs={updateBlogs} />
           </Togglable>
-          {blogs.map(blog =>
-            <Blog key={blog.id} blog={blog} updateBlog={updateBlog} />
-          )}
+          <BlogList blogs={blogs} updateBlog={updateBlog} />
         </div>
       ) :
         <Login doLogin={doLogin} warn={warn} />}
