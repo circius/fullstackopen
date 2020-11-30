@@ -1,5 +1,7 @@
 import React, { useState } from 'react'
 import ToggleButton from './ToggleButton'
+import BlogInfo from './BlogInfo'
+
 import blogService from '../services/blogs'
 
 const Blog = ({ blog, user, updateBlog, deleteBlog }) => {
@@ -29,13 +31,6 @@ const Blog = ({ blog, user, updateBlog, deleteBlog }) => {
     deleteBlog(blog.id)
   }
 
-  const BlogInfo = ({ blog, doLike }) =>
-    (<ul>
-      <li id={`${blog.id}-likes`}>likes: {blog.likes} <button onClick={doLike}>like</button></li>
-      <li id={`${blog.id}-url`}>{blog.url}</li>
-      <li id={`${blog.id}-url`}>{blog.user.username}</li>
-    </ul>)
-
   const DeleteButton = ({ doSelfDelete }) => (
     <button onClick={doSelfDelete}>delete</button>
   )
@@ -54,7 +49,6 @@ const Blog = ({ blog, user, updateBlog, deleteBlog }) => {
         <BlogInfo blog={blog} doLike={doLike} />
       </div>
       {conditionalDeleteButton(user, blog)}
-
     </div >
   )
 }
