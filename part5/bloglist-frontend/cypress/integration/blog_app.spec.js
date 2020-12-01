@@ -124,7 +124,7 @@ describe('when the logged-in user has one new post', function () {
     cy.createBlog(blog1)
     cy.visit(frontendUrl)
   })
-  it.only('they can like it', function () {
+  it('they can like it', function () {
     cy.contains(blog1.title)
       .contains('view')
       .click()
@@ -132,5 +132,11 @@ describe('when the logged-in user has one new post', function () {
       .contains('like')
       .click()
       .parent().contains('likes: 1')
+  })
+  it.only('then can delete it', function () {
+    cy.contains(blog1.title)
+      .contains('delete')
+      .click()
+    cy.contains(blog1.title).not()
   })
 })
