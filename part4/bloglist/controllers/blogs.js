@@ -40,6 +40,7 @@ blogsRouter.post('/', async (request, response) => {
   try {
     const decodedToken = jwt.verify(token, process.env.SECRET)
     const user = await User.findById(decodedToken.id)
+
     const blog = Blog({
       title: body.title,
       user: user.id,
@@ -47,14 +48,12 @@ blogsRouter.post('/', async (request, response) => {
       url: body.url,
       likes: body.likes
     })
-
     const savedBlog = await blog.save()
     user.blogs = user.blogs.concat(savedBlog.id)
     await user.save()
 
     response.status(201).json(savedBlog)
   } catch (exception) {
-    console.log(body)
     console.log(`${exception}: ${token} is invalid JWT`)
     return response.status(400).json({ error: 'malformed token' })
   }

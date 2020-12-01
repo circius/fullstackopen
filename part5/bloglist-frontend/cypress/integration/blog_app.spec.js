@@ -14,6 +14,21 @@ const blog1 = {
   author: 'Munchhausen',
   url: 'https://nothi.ng'
 }
+
+const blog2 = {
+  title: 'two sticks',
+  author: 'Whitechapel',
+  url: 'http://london.gov',
+  likes: 2
+}
+
+const blog3 = {
+  title: 'oranges and lemons',
+  author: 'Clement',
+  url: 'chipch.op',
+  likes: 1,
+}
+
 Cypress.Commands.add('login', ({ username, password }) => {
   cy.request(
     'POST',
@@ -33,11 +48,11 @@ Cypress.Commands.add('createUser', ({ name, username, password }) => {
   )
 })
 
-Cypress.Commands.add('createBlog', ({ author, title, url }) => {
+Cypress.Commands.add('createBlog', ({ author, title, url, likes }) => {
   cy.request({
     url: `${backendApi}/blogs`,
     method: 'POST',
-    body: { author, title, url },
+    body: { author, title, url, likes },
     headers: {
       'Authorization': `bearer ${JSON.parse(localStorage.getItem(userTokenKey)).token}`
     }
@@ -99,7 +114,7 @@ describe('having logged into the blog app', function () {
     cy.login(geraldine)
     cy.visit(frontendUrl)
   })
-  it.only("the user can make new notes", function () {
+  it("the user can make new notes", function () {
     cy.contains('new note')
       .click()
     cy.get('#title')
@@ -133,10 +148,30 @@ describe('when the logged-in user has one new post', function () {
       .click()
       .parent().contains('likes: 1')
   })
-  it.only('then can delete it', function () {
+  it('then can delete it', function () {
     cy.contains(blog1.title)
       .contains('delete')
       .click()
     cy.contains(blog1.title).not()
+  })
+})
+
+
+describe('when the logged-in user has three posts', function () {
+  beforeEach(function () {
+    cy.request('POST', `${backendApi}/testing/reset`)
+    cy.createUser(geraldine)
+    cy.login(geraldine)
+    cy.createBlog(blog1)
+    cy.createBlog(blog2)
+    cy.createBlog(blog3)
+
+    cy.visit(frontendUrl)
+  })
+  it.only('the posts are ordered by likes', function () {
+    cy.get('#blogList')
+      .children()
+      .first().contains('two sticks')
+      .parent().last().contains('apples')
   })
 })
