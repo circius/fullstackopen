@@ -9,6 +9,11 @@ const geraldine = {
   password: 'justgeraldine'
 }
 
+const blog1 = {
+  title: 'apples',
+  author: 'Munchhausen',
+  url: 'https://nothi.ng'
+}
 Cypress.Commands.add('login', ({ username, password }) => {
   cy.request(
     'POST',
@@ -94,19 +99,38 @@ describe('having logged into the blog app', function () {
     cy.login(geraldine)
     cy.visit(frontendUrl)
   })
-  it.only("can make new notes", function () {
+  it.only("the user can make new notes", function () {
     cy.contains('new note')
       .click()
     cy.get('#title')
-      .type('apples')
+      .type(blog1.title)
     cy.get('#author')
-      .type('Munchausen')
+      .type(blog1.author)
     cy.get('#url')
-      .type('http://nothi.ng')
+      .type(blog1.url)
     cy.contains('submit')
       .click()
 
     cy.visit(frontendUrl)
-      .contains('apples')
+      .contains(blog1.title)
+  })
+})
+
+describe('when the logged-in user has one new post', function () {
+  beforeEach(function () {
+    cy.request('POST', `${backendApi}/testing/reset`)
+    cy.createUser(geraldine)
+    cy.login(geraldine)
+    cy.createBlog(blog1)
+    cy.visit(frontendUrl)
+  })
+  it.only('they can like it', function () {
+    cy.contains(blog1.title)
+      .contains('view')
+      .click()
+      .parent().contains('likes: 0')
+      .contains('like')
+      .click()
+      .parent().contains('likes: 1')
   })
 })
