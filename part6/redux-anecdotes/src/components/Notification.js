@@ -8,11 +8,12 @@ const Notification = () => {
     padding: 10,
     borderWidth: 1
   }
-  return (
+  const dom = (
     <div style={style}>
       {notification}
     </div>
   )
+  return notification ? dom : null
 }
 
 export default Notification
