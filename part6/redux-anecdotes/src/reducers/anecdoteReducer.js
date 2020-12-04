@@ -26,15 +26,24 @@ const reducer = (state = initialState, action) => {
       votes: anecdote.votes + 1
     }
   }
+  const stateDoUpdate = id => {
+    console.log('updating id', id)
+    return state.map(
+      anecdote => anecdote.id === id ?
+        anecdoteUpvote(anecdote) : anecdote)
+  }
+  const stateCreate = anecdote => {
+    return [...state, anecdote]
+  }
 
   switch (action.type) {
-    case 'VOTE':
-      return state.map(
-        anecdote => anecdote.id === action.data.id ?
-          anecdoteUpvote(anecdote) : anecdote)
-    case 'CREATE':
-      return [...state, action.data]
-    default: return state
+    case 'VOTE': return stateDoUpdate(action.data.id)
+
+    case 'CREATE': return stateCreate(action.data)
+
+    default: {
+      return state
+    }
   }
 }
 
