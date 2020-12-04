@@ -5,9 +5,14 @@ import { notificationRemove, notificationSet } from '../reducers/notificationRed
 
 const AnecdoteList = props => {
   const dispatch = useDispatch()
-  const anecdotesSortByVote = (a, b) => b.votes - a.votes
+
+  const filter = useSelector(state => state.filter)
+
+  const anecdotesDoFilter = anecdotes => filter ? anecdotes.filter(
+    anecdote => anecdote.content.includes(filter)) : anecdotes
+  const anecdotesDoSort = anecdotes => anecdotes.sort((a, b) => b.votes - a.votes)
   const anecdotes = useSelector(
-    state => state.anecdotes.sort(anecdotesSortByVote))
+    state => anecdotesDoSort(anecdotesDoFilter(state.anecdotes)))
 
   const vote = (id) => {
     const votedMessage = "Thank you for voting!"
