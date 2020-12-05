@@ -1,3 +1,5 @@
+import anecdoteService from '../services/anecdotes'
+
 const reducer = (state = [], action) => {
   const anecdoteUpvote = anecdote => {
     return {
@@ -44,9 +46,14 @@ export const createAnecdote = anecdote => {
 }
 
 export const initAnecdotes = anecdotes => {
-  return {
-    type: 'INITIATE',
-    data: anecdotes
+  return async dispatch => {
+    const anecdotes = await anecdoteService
+      .getAll()
+
+    dispatch({
+      type: 'INITIATE',
+      data: anecdotes
+    })
   }
 }
 
