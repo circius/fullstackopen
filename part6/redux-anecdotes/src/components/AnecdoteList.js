@@ -6,6 +6,7 @@ import { notificationRemove, notificationSet } from '../reducers/notificationRed
 const AnecdoteList = props => {
   const dispatch = useDispatch()
 
+
   const filter = useSelector(state => state.filter)
 
   const anecdotesDoFilter = anecdotes => filter ? anecdotes.filter(
