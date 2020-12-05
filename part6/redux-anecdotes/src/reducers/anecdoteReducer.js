@@ -39,13 +39,16 @@ export const upvoteID = id => {
 }
 
 export const createAnecdote = anecdote => {
-  return {
-    type: 'CREATE',
-    data: anecdote
+  return async dispatch => {
+    const record = await anecdoteService.create(anecdote)
+    dispatch({
+      type: 'CREATE',
+      data: record
+    })
   }
 }
 
-export const initAnecdotes = anecdotes => {
+export const initAnecdotes = () => {
   return async dispatch => {
     const anecdotes = await anecdoteService
       .getAll()
