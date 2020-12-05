@@ -10,4 +10,8 @@ const create = anecdote => axios
   .post(baseUrl, { content: anecdote, votes: 0 })
   .then(response => response.data)
 
-export default { getAll, create }
+const upvote = anecdote => axios
+  .put(`${baseUrl}/${anecdote.id}`, { ...anecdote, votes: anecdote.votes + 1 })
+  .then(response => response.data)
+
+export default { getAll, create, upvote }
