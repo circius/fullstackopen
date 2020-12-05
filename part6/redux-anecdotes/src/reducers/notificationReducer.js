@@ -1,5 +1,7 @@
 const initialState = null
 
+let timerID = 0
+
 const reducer = (state = initialState, action) => {
   const doNotify = state => {
     return action.data
@@ -17,7 +19,8 @@ export const notificationSet = (notification, timeout) => dispatch => {
     type: 'NOTIFY',
     data: notification
   })
-  setTimeout(() => dispatch(notificationRemove()), timeout)
+  if (timerID) clearTimeout(timerID)
+  timerID = setTimeout(() => dispatch(notificationRemove()), timeout)
 }
 
 export const notificationRemove = () => {
