@@ -7,7 +7,7 @@ const getAll = () => axios
   .then(response => response.data)
 
 const create = anecdote => axios
-  .post(baseUrl, { content: anecdote })
+  .post(baseUrl, { content: anecdote, votes: 0 })
   .then(response => response.data)
 
 export default { getAll, create }

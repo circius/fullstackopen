@@ -24,9 +24,8 @@ const reducer = (state = [], action) => {
       return stateCreate(action.data)
     case 'INITIATE':
       return stateInit(action.data)
-    default: {
+    default:
       return state
-    }
   }
 }
 
