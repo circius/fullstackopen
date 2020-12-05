@@ -2,8 +2,6 @@ const initialState = null
 
 const reducer = (state = initialState, action) => {
   const doNotify = state => {
-    console.log('doNotify!')
-    console.log(action)
     return action.data
   }
 
@@ -14,11 +12,12 @@ const reducer = (state = initialState, action) => {
   }
 }
 
-export const notificationSet = notification => {
-  return {
+export const notificationSet = (notification, timeout) => dispatch => {
+  dispatch({
     type: 'NOTIFY',
     data: notification
-  }
+  })
+  setTimeout(() => dispatch(notificationRemove()), timeout)
 }
 
 export const notificationRemove = () => {
