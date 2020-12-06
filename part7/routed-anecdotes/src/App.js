@@ -89,9 +89,10 @@ const CreateNew = (props) => {
 
   const reset = e => {
     e.preventDefault()
-    content.setValue('')
-    author.setValue('')
-    info.setValue('')
+    // [content, author, info].forEach(el => el.reset()) <- doesn't work for some reason
+    content.reset()
+    author.reset()
+    info.reset()
   }
 
   return (
