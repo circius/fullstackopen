@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import {
   BrowserRouter as Router,
-  Switch, Route, Link, useParams
+  Switch, Route, Link, useParams, useHistory
 } from 'react-router-dom'
 
 const Menu = () => {
@@ -69,6 +69,7 @@ const CreateNew = (props) => {
   const [content, setContent] = useState('')
   const [author, setAuthor] = useState('')
   const [info, setInfo] = useState('')
+  const history = useHistory()
 
 
   const handleSubmit = (e) => {
@@ -79,6 +80,8 @@ const CreateNew = (props) => {
       info,
       votes: 0
     })
+
+    history.push('/')
   }
 
   return (
@@ -124,9 +127,20 @@ const App = () => {
 
   const [notification, setNotification] = useState('')
 
+  const FLASH_TIME = 10000
+  const NEW_ANECDOTE_FLASH = "thanks for your anecdote"
+  let notificationId = ""
+
+  const flash = message => {
+    if (notificationId) clearTimeout(notificationId)
+    setNotification(message)
+    notificationId = setTimeout(() => setNotification(''), FLASH_TIME)
+  }
+
   const addNew = (anecdote) => {
     anecdote.id = (Math.random() * 10000).toFixed(0)
     setAnecdotes(anecdotes.concat(anecdote))
+    flash(NEW_ANECDOTE_FLASH)
   }
 
   const anecdoteById = (id) =>
@@ -143,11 +157,18 @@ const App = () => {
     setAnecdotes(anecdotes.map(a => a.id === id ? voted : a))
   }
 
+  const Flash = ({ nptification }) => (
+    <div style={{ border: 1, color: 'red' }}>
+      {notification}
+    </div>
+  )
+
   return (
     <Router>
       <div>
         <h1>Software anecdotes</h1>
         <Menu />
+        <Flash notification={notification} />
         <Switch>
           <Route path="/about">
             <About />
