@@ -87,6 +87,13 @@ const CreateNew = (props) => {
     history.push('/')
   }
 
+  const reset = e => {
+    e.preventDefault()
+    content.setValue('')
+    author.setValue('')
+    info.setValue('')
+  }
+
   return (
     <div>
       <h2>create a new anecdote</h2>
@@ -104,6 +111,7 @@ const CreateNew = (props) => {
           <input {...info} />
         </div>
         <button>create</button>
+        <button onClick={reset}>reset</button>
       </form>
     </div>
   )
