@@ -2,6 +2,8 @@ import React, { useState } from 'react'
 import { useDispatch } from 'react-redux'
 
 import { blogsLikeOne, blogsDeleteOne } from '../reducers/blogsReducer'
+import { tell } from '../reducers/tellReducer'
+import { warn } from '../reducers/warnReducer'
 
 import ToggleButton from './ToggleButton'
 import BlogInfo from './BlogInfo'
@@ -25,10 +27,12 @@ const Blog = ({ blog, user, updateBlog, deleteBlog }) => {
   }
 
   const doLike = () => {
+    dispatch(tell('liked a blog'))
     dispatch(blogsLikeOne(blog))
   }
 
   const doSelfDelete = async () => {
+    dispatch(warn("deleted a blog"))
     dispatch(blogsDeleteOne(blog))
   }
 

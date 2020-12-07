@@ -1,5 +1,7 @@
 const initialState = null
 
+const duration = 3000
+
 const reducer = (state = initialState, action) => {
   switch (action.type) {
     case 'TELL': return action.data
@@ -8,10 +10,14 @@ const reducer = (state = initialState, action) => {
   }
 }
 
-export const tell = message => ({
-  type: 'TELL',
-  data: message
-})
+export const tell = message => dispatch => {
+  setTimeout(() => untell(), duration)
+  console.log('telling!!')
+  dispatch({
+    type: 'TELL',
+    data: message
+  })
+}
 
 export const untell = () => ({
   type: 'UNTELL'

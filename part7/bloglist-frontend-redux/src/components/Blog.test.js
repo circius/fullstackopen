@@ -2,11 +2,15 @@ import React from 'react'
 import '@testing-library/jest-dom/extend-expect'
 import { render, fireEvent } from '@testing-library/react'
 import Blog from './Blog'
+import { store } from '../store'
+import { Provider } from 'react-redux'
 import { blog1, geraldine } from '../../testdata/geraldine'
+
+const provideComponent = component => <Provider store={store}>{component}</Provider>
 
 describe('<Blog />', () => {
   test('by default, shows author and title but no other details', () => {
-    const component = render(<Blog blog={blog1} user={geraldine} />)
+    const component = render(provideComponent(<Blog blog={blog1} user={geraldine} />))
     const blogDiv = component.container
     const blogInfo = component.container.querySelector('.blogInfo')
 
@@ -15,7 +19,7 @@ describe('<Blog />', () => {
   })
   test('clicking the `view` button shows the blog`s likes and url', () => {
 
-    const component = render(<Blog blog={blog1} user={geraldine} />)
+    const component = render(provideComponent(<Blog blog={blog1} user={geraldine} />))
     const button = component.getByText('view')
     fireEvent.click(button)
 

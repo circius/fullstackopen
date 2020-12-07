@@ -1,9 +1,10 @@
 import React, { useState } from 'react'
 
 import loginService from '../services/login'
+import { warn } from '../reducers/warnReducer'
 
 
-const Login = ({ doLogin, warn }) => {
+const Login = ({ doLogin }) => {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
 
@@ -23,6 +24,7 @@ const Login = ({ doLogin, warn }) => {
       console.log('failed login!');
     }
   }
+
 
   return (
 

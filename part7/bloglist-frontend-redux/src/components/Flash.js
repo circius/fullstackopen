@@ -11,7 +11,10 @@ const Flash = ({ message, className }) => {
     </div>
 }
 
-export const WarnFlash = ({ message }) => <Flash message={message} className='warning' />
+export const WarnFlash = () => {
+  const message = useSelector(state => state.warn)
+  return (<Flash message={message} className='warning' />)
+}
 export const TellFlash = () => {
   const message = useSelector(state => state.tell)
   return <Flash message={message} className='telling' />
