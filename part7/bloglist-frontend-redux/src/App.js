@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 
 import { tell, untell } from './reducers/tellReducer'
 import { blogsInit, blogsAddOne } from './reducers/blogsReducer'
+import { login, logout } from './reducers/currentUserReducer'
 
 import Login from './components/Login'
 import LogoutButton from './components/LogoutButton'
@@ -15,8 +16,8 @@ import blogService from './services/blogs'
 
 const App = () => {
   const dispatch = useDispatch()
+  const user = useSelector(state => state.currentUser)
   const [blogs, setBlogs] = useState([])
-  const [user, setUser] = useState(null)
   const [warnFlashMessage, setWarnFlashMessage] = useState(null)
 
   const userTokenKey = 'loggedBlogUser'
@@ -26,22 +27,21 @@ const App = () => {
     if (user) {
       dispatch(blogsInit())
     }
-  }, [user, dispatch])
+  }, [user])
 
 
   useEffect(() => {
     const loggedUserJSON = getUserCookie()
     const setUserFromCookie = cookie => {
       const userInfo = JSON.parse(cookie)
-      setUser(userInfo)
-      blogService.setUser(userInfo)
+      dispatch(login(userInfo))
       return user
     }
 
     if (loggedUserJSON) {
       setUserFromCookie(loggedUserJSON)
     }
-  }, [user])
+  }, [])
 
   const loggedInP = () => user !== null
 
@@ -52,16 +52,18 @@ const App = () => {
 
 
   const doLogin = incomingUser => {
-    setUser(incomingUser)
+    dispatch(login(incomingUser))
+
     setUserCookie(JSON.stringify(incomingUser))
-    blogService.setUser(incomingUser)
+
     doTell("logged in!")
     return user
   }
 
   const doLogout = () => {
     unsetUserCookie()
-    setUser(null)
+    dispatch(logout())
+
     doTell("logged out")
     return user
   }
