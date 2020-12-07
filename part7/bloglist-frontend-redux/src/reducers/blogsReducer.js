@@ -9,8 +9,17 @@ const reducer = (state = initialState, action) => {
     case 'BLOGS_ADD_ONE': return [...state, action.data]
     case 'BLOGS_LIKE_ONE': return state.map(
       blog => blog.id === action.data ? doLike(blog) : blog)
+    case 'BLOGS_DELETE_ONE': return state.filter(blog => blog.id !== action.data)
     default: return state
   }
+}
+
+export const blogsDeleteOne = blog => async dispatch => {
+  blogService.deleteOne(blog)
+  dispatch({
+    type: 'BLOGS_DELETE_ONE',
+    data: blog.id
+  })
 }
 
 export const blogsLikeOne = blog => async dispatch => {
