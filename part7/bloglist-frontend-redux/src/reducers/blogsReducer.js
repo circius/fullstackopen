@@ -11,11 +11,13 @@ const reducer = (state = initialState, action) => {
   }
 }
 
-export const blogsInit = blogs =>
-  ({
+export const blogsInit = () => async dispatch => {
+  const blogs = await blogService.getAll()
+  dispatch({
     type: 'BLOGS_INIT',
     data: blogs
   })
+}
 
 export const blogsAddOne = blog => ({
   type: 'BLOGS_ADD_ONE',
