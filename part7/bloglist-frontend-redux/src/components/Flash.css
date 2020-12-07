@@ -1,0 +1,14 @@
+.flash {
+    border: solid;
+    opacity:70%;
+    background-color: cornsilk;
+    padding: 1em;
+}
+
+.warning {
+    color: red;
+}
+
+.telling {
+    color: green;
+}
