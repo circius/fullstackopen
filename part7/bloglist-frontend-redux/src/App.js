@@ -1,4 +1,8 @@
 import React, { useState, useEffect } from 'react'
+import { useDispatch } from 'react-redux'
+
+import { tell, untell } from './reducers/tellReducer'
+
 import Blog from './components/Blog'
 import Login from './components/Login'
 import LogoutButton from './components/LogoutButton'
@@ -10,6 +14,7 @@ import BlogList from './components/BlogList'
 import blogService from './services/blogs'
 
 const App = () => {
+  const dispatch = useDispatch()
   const [blogs, setBlogs] = useState([])
   const [user, setUser] = useState(null)
   const [warnFlashMessage, setWarnFlashMessage] = useState(null)
@@ -50,20 +55,20 @@ const App = () => {
     setUser(incomingUser)
     setUserCookie(JSON.stringify(incomingUser))
     blogService.setUser(incomingUser)
-    tell("logged in!")
+    doTell("logged in!")
     return user
   }
 
   const doLogout = () => {
     unsetUserCookie()
     setUser(null)
-    tell("logged out")
+    doTell("logged out")
     return user
   }
 
-  const tell = message => {
-    setTellFlashMessage(message)
-    setTimeout(() => setTellFlashMessage(null), 3000)
+  const doTell = message => {
+    dispatch(tell(message))
+    setTimeout(() => dispatch(untell()), 3000)
   }
 
   const warn = message => {
@@ -73,7 +78,7 @@ const App = () => {
 
   const updateBlogs = newBlog => {
     setBlogs(blogs.concat(newBlog))
-    tell(`added blog ${newBlog.title}`)
+    doTell(`added blog ${newBlog.title}`)
   }
 
   const updateBlog = (id, update) => {
