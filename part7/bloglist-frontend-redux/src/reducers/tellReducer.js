@@ -1,7 +1,5 @@
 const initialState = null
 
-const timeout = 5000
-
 const reducer = (state = initialState, action) => {
   switch (action.type) {
     case 'TELL': return action.data

@@ -6,8 +6,6 @@ import { blogsLikeOne, blogsDeleteOne } from '../reducers/blogsReducer'
 import ToggleButton from './ToggleButton'
 import BlogInfo from './BlogInfo'
 
-import blogService from '../services/blogs'
-
 const Blog = ({ blog, user, updateBlog, deleteBlog }) => {
   const dispatch = useDispatch()
   const [showDetails, setShowDetails] = useState(false)

@@ -4,7 +4,6 @@ import { useDispatch } from 'react-redux'
 import { tell, untell } from './reducers/tellReducer'
 import { blogsInit, blogsAddOne } from './reducers/blogsReducer'
 
-import Blog from './components/Blog'
 import Login from './components/Login'
 import LogoutButton from './components/LogoutButton'
 import NewBlogForm from './components/NewBlogForm'
@@ -27,14 +26,22 @@ const App = () => {
     if (user) {
       dispatch(blogsInit())
     }
-  }, [user])
+  }, [user, dispatch])
+
 
   useEffect(() => {
     const loggedUserJSON = getUserCookie()
+    const setUserFromCookie = cookie => {
+      const userInfo = JSON.parse(cookie)
+      setUser(userInfo)
+      blogService.setUser(userInfo)
+      return user
+    }
+
     if (loggedUserJSON) {
       setUserFromCookie(loggedUserJSON)
     }
-  }, [])
+  }, [user])
 
   const loggedInP = () => user !== null
 
@@ -42,12 +49,7 @@ const App = () => {
   const setUserCookie = userJSON => window.localStorage.setItem(userTokenKey, userJSON)
   const unsetUserCookie = () => window.localStorage.removeItem(userTokenKey)
 
-  const setUserFromCookie = cookie => {
-    const userInfo = JSON.parse(cookie)
-    setUser(userInfo)
-    blogService.setUser(userInfo)
-    return user
-  }
+
 
   const doLogin = incomingUser => {
     setUser(incomingUser)
