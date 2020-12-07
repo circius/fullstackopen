@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { useDispatch } from 'react-redux'
 
 import { tell, untell } from './reducers/tellReducer'
+import { blogsInit, blogsAddOne } from './reducers/blogsReducer'
 
 import Blog from './components/Blog'
 import Login from './components/Login'
@@ -25,9 +26,7 @@ const App = () => {
 
   useEffect(() => {
     if (user) {
-      blogService.getAll(user).then(blogs => {
-        setBlogs(blogs)
-      })
+      (blogService.getAll().then(blogs => dispatch(blogsInit(blogs))))//; dispatch(blogsInit(blogs)
     }
   }, [user])
 
@@ -77,6 +76,7 @@ const App = () => {
   }
 
   const updateBlogs = newBlog => {
+    dispatch(blogsAddOne(newBlog))
     setBlogs(blogs.concat(newBlog))
     doTell(`added blog ${newBlog.title}`)
   }
