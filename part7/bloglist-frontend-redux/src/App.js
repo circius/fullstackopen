@@ -19,14 +19,13 @@ const App = () => {
   const [blogs, setBlogs] = useState([])
   const [user, setUser] = useState(null)
   const [warnFlashMessage, setWarnFlashMessage] = useState(null)
-  const [tellFlashMessage, setTellFlashMessage] = useState(null)
 
   const userTokenKey = 'loggedBlogUser'
   const flashTimeout = 3000
 
   useEffect(() => {
     if (user) {
-      (blogService.getAll().then(blogs => dispatch(blogsInit(blogs))))//; dispatch(blogsInit(blogs)
+      dispatch(blogsInit())
     }
   }, [user])
 
@@ -95,7 +94,7 @@ const App = () => {
   return (
     <div>
       <WarnFlash message={warnFlashMessage} />
-      <TellFlash message={tellFlashMessage} />
+      <TellFlash />
       {loggedInP() ? (
         <div>
 

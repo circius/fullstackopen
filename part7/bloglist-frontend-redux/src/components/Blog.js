@@ -1,10 +1,15 @@
 import React, { useState } from 'react'
+import { useDispatch } from 'react-redux'
+
+import { blogsLikeOne } from '../reducers/blogsReducer'
+
 import ToggleButton from './ToggleButton'
 import BlogInfo from './BlogInfo'
 
 import blogService from '../services/blogs'
 
 const Blog = ({ blog, user, updateBlog, deleteBlog }) => {
+  const dispatch = useDispatch()
   const [showDetails, setShowDetails] = useState(false)
 
   const showWhenVisible = {
@@ -21,9 +26,8 @@ const Blog = ({ blog, user, updateBlog, deleteBlog }) => {
     marginBottom: 5
   }
 
-  const doLike = async () => {
-    const newBlog = await blogService.bumpLike(blog)
-    updateBlog(blog.id, newBlog)
+  const doLike = () => {
+    dispatch(blogsLikeOne(blog))
   }
 
   const doSelfDelete = async () => {
