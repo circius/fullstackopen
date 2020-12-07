@@ -1,5 +1,8 @@
-import { createStore } from 'redux'
+import { createStore, combineReducers } from 'redux'
 import { devToolsEnhancer } from 'redux-devtools-extension'
 import tellReducer from './reducers/tellReducer'
 
-export const store = createStore(tellReducer, devToolsEnhancer())
+const reducer = combineReducers({
+  tell: tellReducer
+})
+export const store = createStore(reducer, devToolsEnhancer())
