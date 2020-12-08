@@ -35,6 +35,7 @@ const App = () => {
   useEffect(() => {
     const loggedUserJSON = getUserCookie(userTokenKey)
     const setUserFromCookie = cookie => {
+      console.log(cookie)
       const userInfo = JSON.parse(cookie)
       dispatch(login(userInfo))
       return user
@@ -48,7 +49,7 @@ const App = () => {
 
   const doLogin = incomingUser => {
     dispatch(login(incomingUser))
-    setUserCookie(userTokenKey, JSON.stringify(incomingUser))
+    setUserCookie(JSON.stringify(incomingUser))
     dispatch(tell("logged in!"))
     return user
   }
