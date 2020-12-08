@@ -2,7 +2,7 @@ import React from 'react'
 import Blog from './Blog'
 import { useSelector } from 'react-redux'
 
-const BlogList = ({ updateBlog, deleteBlog, user }) => {
+const BlogList = ({ user }) => {
   const blogs = useSelector(state => state.blogs)
   const sortByLike = blogs => blogs.sort((a, b) => b.likes - a.likes)
   const blogsSorted = sortByLike(blogs)
