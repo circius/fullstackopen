@@ -10,12 +10,13 @@ const UserGreeting = ({ user }) => (
 
 const Menu = ({ user }) => {
   const padding = { padding: '2em' }
+  const menuStyle = { 'background-color': '#dddddd', padding: '5px' }
   return (
-    <div id="menu">
+    <nav id="menu" style={menuStyle}>
       <Link style={padding} to="/">bloglist</Link>
       <Link style={padding} to="/users">users</Link>
       { user && <UserGreeting user={user} />}
-    </div>
+    </nav>
   )
 }
 

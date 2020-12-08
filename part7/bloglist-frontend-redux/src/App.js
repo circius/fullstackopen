@@ -16,6 +16,7 @@ import Users from './components/Users'
 import UserDetail from './components/UserDetail'
 import BlogApp from './components/BlogApp'
 import Menu from './components/Menu'
+import BlogInfo from './components/BlogInfo'
 
 
 const App = () => {
@@ -65,6 +66,9 @@ const App = () => {
           </Route>
           <Route path="/users">
             <Users />
+          </Route>
+          <Route path="/blogs/:id">
+            <BlogInfo />
           </Route>
           <Route path="/">
             {user ? (
