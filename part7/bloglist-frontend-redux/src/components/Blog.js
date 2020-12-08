@@ -26,7 +26,7 @@ const Blog = ({ blog, user }) => {
 
   return (
     < div >
-      <Link to={`/blogs/${blog.id}`}>{blog.title} - {blog.author}</Link>
+      <Link to={`/blogs/${blog.id}`}>{blog.title}</Link> - {blog.author}
       {conditionalDeleteButton(user, blog)}
     </div >
   )
