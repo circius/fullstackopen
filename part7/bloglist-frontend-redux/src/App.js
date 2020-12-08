@@ -9,6 +9,7 @@ import { blogsInit } from './reducers/blogsReducer'
 import { login } from './reducers/currentUserReducer'
 import { tell } from './reducers/tellReducer'
 import { getUserCookie, setUserCookie } from './helpers/cookies'
+import { userTokenKey } from './config'
 
 import Login from './components/Login'
 import { WarnFlash, TellFlash } from './components/Flash'
@@ -22,7 +23,7 @@ import BlogInfo from './components/BlogInfo'
 const App = () => {
   const dispatch = useDispatch()
   const user = useSelector(state => state.currentUser)
-  const userTokenKey = 'loggedBlogUser'
+
 
   useEffect(() => {
     if (user) {
