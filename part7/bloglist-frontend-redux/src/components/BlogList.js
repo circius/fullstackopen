@@ -9,7 +9,7 @@ const BlogList = ({ updateBlog, deleteBlog, user }) => {
   return (
     <div id="blogList">
       {blogsSorted.map(blog =>
-        <Blog key={blog.id} blog={blog} updateBlog={updateBlog} deleteBlog={deleteBlog} user={user} />
+        <Blog key={blog.id} blog={blog} user={user} />
       )}
     </div>
   )
