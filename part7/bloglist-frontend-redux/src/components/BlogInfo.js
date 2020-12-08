@@ -2,14 +2,11 @@ import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useParams } from 'react-router-dom'
 
-
 import { blogsLikeOne } from '../reducers/blogsReducer'
 
-const Comments = ({ blog }) => !blog.comments ? null : (
-  <ul>
-    {blog.comments.map(comment => <li>{comment}</li>)}
-  </ul>
-)
+import Comments from './Comments'
+
+
 
 const BlogInfo = () => {
   const dispatch = useDispatch()

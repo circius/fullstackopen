@@ -15,7 +15,7 @@ const reducer = (state = initialState, action) => {
     case 'BLOGS_LIKE_ONE': return state.map(
       blog => blog.id === action.data ? doLike(blog) : blog)
     case 'BLOGS_DELETE_ONE': return state.filter(blog => blog.id !== action.data)
-    case 'BLOG_ADD_COMMENT': return state.filter.map(
+    case 'BLOG_ADD_COMMENT': return state.map(
       blog => blog.id === action.data.id ? addComment(blog, action.data.comment) : blog
     )
     default: return state
@@ -52,7 +52,7 @@ export const blogsAddOne = blog => ({
 })
 
 export const blogAddComment = (blog, comment) => async dispatch => {
-  blogService.blogAddComment(blog, comment)
+  const newBlog = await blogService.addComment(blog, comment)
   dispatch({
     type: 'BLOG_ADD_COMMENT',
     data: {
