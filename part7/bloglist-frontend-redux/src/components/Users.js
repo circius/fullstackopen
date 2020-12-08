@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { Link } from 'react-router-dom'
+import { Table } from 'react-bootstrap'
 import { initUsers } from '../reducers/usersReducer'
 
 const Users = () => {
@@ -17,18 +18,18 @@ const Users = () => {
   )
 
   const UserInfo = ({ users }) => (
-    <table>
+    <Table striped hover size="sm">
       <tr>
         <th></th>
         <th>blogs created</th>
       </tr>
       {users.map(user => <UserRow user={user} />)}
-    </table>
+    </Table>
   )
 
   return (
     <div>
-      <h2>users</h2>
+      <h3>users</h3>
       {users && <UserInfo users={users} />}
     </div>
   )
