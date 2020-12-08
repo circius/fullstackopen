@@ -55,7 +55,7 @@ const App = () => {
   return (
     <Router>
 
-      <div>
+      <div className="container">
         <Menu user={user} />
         <WarnFlash />
         <TellFlash />
@@ -78,9 +78,9 @@ const App = () => {
               <Login doLogin={doLogin} />}
           </Route>
 
-        </Switch>
-      </div>
-    </Router>
+        </Switch >
+      </div >
+    </Router >
   )
 }
 
