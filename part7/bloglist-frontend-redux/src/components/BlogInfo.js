@@ -1,6 +1,7 @@
 import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useParams } from 'react-router-dom'
+import { Button } from 'react-bootstrap'
 
 import { blogsLikeOne } from '../reducers/blogsReducer'
 
@@ -18,9 +19,9 @@ const BlogInfo = () => {
   }
 
   return !blog ? null : (<div>
-    <h2>{blog.title}</h2>
+    <h3>{blog.title}</h3>
     <ul>
-      <li id={`${blog.id}-likes`}>likes: {blog.likes} <button onClick={doLike}>like</button></li>
+      <li id={`${blog.id}-likes`}>likes: {blog.likes} <Button variant="outline-success" onClick={doLike}>+</Button></li>
       <li id={`${blog.id}-url`}>
         <a href={blog.url} target="_blank" rel="noopener noreferrer">{blog.url}</a>
       </li>
