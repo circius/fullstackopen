@@ -46,10 +46,13 @@ export const blogsInit = () => async dispatch => {
   })
 }
 
-export const blogsAddOne = blog => ({
-  type: 'BLOGS_ADD_ONE',
-  data: blog
-})
+export const blogsAddOne = blog => async dispatch => {
+  const newBlog = await blogService.postBlog(blog)
+  dispatch({
+    type: 'BLOGS_ADD_ONE',
+    data: newBlog
+  })
+}
 
 export const blogAddComment = (blog, comment) => async dispatch => {
   blogService.addComment(blog, comment)

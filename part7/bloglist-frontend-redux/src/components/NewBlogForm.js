@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { Button } from 'react-bootstrap'
 
 import blogService from '../services/blogs'
 
@@ -15,25 +16,8 @@ const NewBlogForm = ({ user, updateBlogs }) => {
 
   const clickHandler = async event => {
     event.preventDefault()
-    console.log('handling form')
-
-    const newBlog = {
-      title: title,
-      author: author,
-      url: URL
-    }
-
-    console.log(newBlog)
-
-    try {
-      const response = await blogService.postBlog(newBlog)
-      resetForm()
-      console.log('response', response)
-      updateBlogs(response)
-    }
-    catch (exception) {
-      console.log(exception)
-    }
+    resetForm()
+    updateBlogs({ title, author, url: URL })
   }
 
   return (
@@ -68,7 +52,7 @@ const NewBlogForm = ({ user, updateBlogs }) => {
           onChange={({ target }) => setURL(target.value)}
         />
       </div>
-      <button type="submit">submit</button>
+      <Button variant="outline-primary" type="submit">submit</Button>
     </form>
   )
 }
