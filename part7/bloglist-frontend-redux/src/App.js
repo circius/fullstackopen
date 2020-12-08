@@ -11,9 +11,9 @@ import { tell } from './reducers/tellReducer'
 import { getUserCookie, setUserCookie } from './helpers/cookies'
 
 import Login from './components/Login'
-
 import { WarnFlash, TellFlash } from './components/Flash'
 import Users from './components/Users'
+import UserDetail from './components/UserDetail'
 import BlogApp from './components/BlogApp'
 import Menu from './components/Menu'
 
@@ -60,6 +60,9 @@ const App = () => {
         <TellFlash />
         <h2>blogs</h2>
         <Switch>
+          <Route path="/users/:id">
+            <UserDetail />
+          </Route>
           <Route path="/users">
             <Users />
           </Route>

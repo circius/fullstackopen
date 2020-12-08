@@ -5,7 +5,6 @@ import { useSelector, useDispatch } from 'react-redux'
 import { tell } from '../reducers/tellReducer'
 import { blogsAddOne } from '../reducers/blogsReducer'
 
-import LogoutButton from './LogoutButton'
 import NewBlogForm from './NewBlogForm'
 import Togglable from './Togglable'
 import BlogList from './BlogList'
