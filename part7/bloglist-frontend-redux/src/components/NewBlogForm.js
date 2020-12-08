@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
-import { Button } from 'react-bootstrap'
+import { Button, Form } from 'react-bootstrap'
+
 
 import { useField } from '../hooks/useField'
 import blogService from '../services/blogs'
@@ -23,27 +24,24 @@ const NewBlogForm = ({ user, updateBlogs }) => {
   }
 
   return (
-    <form id="newBlogForm" onSubmit={clickHandler}>
-      <div>
-        title:
-  <input
-          {...title}
+    <Form id="newBlogForm" onSubmit={clickHandler}>
+      <Form.Group>
+        <Form.Control
+          {...title} placeholder="title"
         />
-      </div>
-      <div>
-        author:
-<input
-          {...author}
+      </Form.Group>
+      <Form.Group>
+        <Form.Control
+          {...author} placeholder="author"
         />
-      </div>
-      <div>
-        url:
-    <input
-          {...url}
+      </Form.Group>
+      <Form.Group>
+        <Form.Control
+          {...url} placeholder="url"
         />
-      </div>
+      </Form.Group>
       <Button variant="outline-primary" type="submit">submit</Button>
-    </form>
+    </Form>
   )
 }
 

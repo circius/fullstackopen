@@ -1,5 +1,6 @@
 import React from 'react'
 import { useDispatch } from 'react-redux'
+import { Button } from 'react-bootstrap'
 
 import { useField } from '../hooks/useField'
 import { blogAddComment } from '../reducers/blogsReducer'
@@ -14,7 +15,7 @@ const AddCommentForm = ({ blog }) => {
   return (
     <form onSubmit={doAddComment}>
       <input {...comment} />
-      <button>add comment</button>
+      <Button variant="outline-primary">add comment</Button>
     </form>
   )
 }
