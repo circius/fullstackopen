@@ -25,8 +25,6 @@ const postBlog = async blog => {
     blog,
     userAuthHeader(user)
   )
-  console.log('user in blogService', user)
-  console.log('result of request', request)
   return request.data
 }
 
@@ -51,4 +49,18 @@ const bumpLike = async (blog) => {
   return request.data
 }
 
-export default { getAll, postBlog, bumpLike, setUser, deleteOne }
+const addComment = async (blog, comment) => {
+  const blogUrl = `${baseUrl}/${blog.id}`
+  const currentComments = blog.comments ? blog.comments : []
+  const update = {
+    id: blog.id,
+    comments: currentComments.concat(comment)
+  }
+  const request = await axios.put(
+    blogUrl,
+    update
+  )
+  return request.data
+}
+
+export default { getAll, postBlog, bumpLike, setUser, deleteOne, addComment }

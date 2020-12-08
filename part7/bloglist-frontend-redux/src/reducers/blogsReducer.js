@@ -4,12 +4,20 @@ const initialState = []
 
 const reducer = (state = initialState, action) => {
   const doLike = blog => ({ ...blog, likes: blog.likes + 1 })
+  const addComment = (blog, comment) =>
+    ({
+      ...blog,
+      comments: (!blog.comments ? [] : blog.comments).concat(comment)
+    })
   switch (action.type) {
     case 'BLOGS_INIT': return action.data
     case 'BLOGS_ADD_ONE': return [...state, action.data]
     case 'BLOGS_LIKE_ONE': return state.map(
       blog => blog.id === action.data ? doLike(blog) : blog)
     case 'BLOGS_DELETE_ONE': return state.filter(blog => blog.id !== action.data)
+    case 'BLOG_ADD_COMMENT': return state.filter.map(
+      blog => blog.id === action.data.id ? addComment(blog, action.data.comment) : blog
+    )
     default: return state
   }
 }
@@ -43,4 +51,14 @@ export const blogsAddOne = blog => ({
   data: blog
 })
 
+export const blogAddComment = (blog, comment) => async dispatch => {
+  blogService.blogAddComment(blog, comment)
+  dispatch({
+    type: 'BLOG_ADD_COMMENT',
+    data: {
+      id: blog.id,
+      comment
+    }
+  })
+}
 export default reducer

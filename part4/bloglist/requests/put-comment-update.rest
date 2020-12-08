@@ -1,2 +1,8 @@
-GET http://localhost:3003/api/blogs
+PUT http://localhost:3003/api/blogs/5fc6781145f0c3e059d33634
 Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImdlcmFsZGluZSIsImlkIjoiNWZjNjc4MTA0NWYwYzNlMDU5ZDMzNjMxIiwiaWF0IjoxNjA3MzY2ODY5fQ.v8W6jFov022Ww3rPNyAZShh_G5Tj7Okm276wT-n1gvg
+Content-Type: application/json
+
+{
+  "comments": ["lovely stuff"],
+  "id": "5fc1114e5c3a23dc42f024c1"
+}

@@ -5,6 +5,11 @@ import { useParams } from 'react-router-dom'
 
 import { blogsLikeOne } from '../reducers/blogsReducer'
 
+const Comments = ({ blog }) => !blog.comments ? null : (
+  <ul>
+    {blog.comments.map(comment => <li>{comment}</li>)}
+  </ul>
+)
 
 const BlogInfo = () => {
   const dispatch = useDispatch()
@@ -24,6 +29,7 @@ const BlogInfo = () => {
       </li>
       <li id={`${blog.id}-url`}>{blog.user.username}</li>
     </ul>
+    <Comments blog={blog} />
   </div>)
 }
 
