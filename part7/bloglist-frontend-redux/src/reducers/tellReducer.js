@@ -11,8 +11,7 @@ const reducer = (state = initialState, action) => {
 }
 
 export const tell = message => dispatch => {
-  setTimeout(() => untell(), duration)
-  console.log('telling!!')
+  setTimeout(() => dispatch(untell()), duration)
   dispatch({
     type: 'TELL',
     data: message

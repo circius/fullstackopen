@@ -11,7 +11,7 @@ const reducer = (state = initialState, action) => {
 }
 
 export const warn = message => dispatch => {
-  setTimeout(() => unwarn(), duration)
+  setTimeout(() => dispatch(unwarn()), duration)
   dispatch({
     type: 'WARN',
     data: message
