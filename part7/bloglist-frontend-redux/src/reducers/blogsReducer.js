@@ -52,7 +52,7 @@ export const blogsAddOne = blog => ({
 })
 
 export const blogAddComment = (blog, comment) => async dispatch => {
-  const newBlog = await blogService.addComment(blog, comment)
+  blogService.addComment(blog, comment)
   dispatch({
     type: 'BLOG_ADD_COMMENT',
     data: {
