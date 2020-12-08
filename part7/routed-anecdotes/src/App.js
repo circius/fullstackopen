@@ -169,7 +169,7 @@ const App = () => {
     setAnecdotes(anecdotes.map(a => a.id === id ? voted : a))
   }
 
-  const Flash = ({ nptification }) => (
+  const Flash = ({ notification }) => (
     <div style={{ border: 1, color: 'red' }}>
       {notification}
     </div>

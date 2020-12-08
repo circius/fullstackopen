@@ -55,9 +55,10 @@ const App = () => {
     <Router>
 
       <div>
-        <Menu />
+        <Menu user={user} />
         <WarnFlash />
         <TellFlash />
+        <h2>blogs</h2>
         <Switch>
           <Route path="/users">
             <Users />

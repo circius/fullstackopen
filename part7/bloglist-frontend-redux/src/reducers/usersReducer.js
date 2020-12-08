@@ -1,6 +1,6 @@
 import usersService from '../services/users'
 
-const initialState = null
+const initialState = []
 const reducer = (state = initialState, action) => {
   switch (action.type) {
     case "INIT_USERS": return action.data
