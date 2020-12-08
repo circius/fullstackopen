@@ -1,5 +1,6 @@
 import React from 'react'
 import { useDispatch } from 'react-redux'
+import { Button } from 'react-bootstrap'
 
 import { unsetUserCookie } from '../helpers/cookies'
 import { logout } from '../reducers/currentUserReducer'
@@ -14,7 +15,7 @@ const Logout = () => {
     dispatch(tell("logged out"))
   }
   return (
-    <button onClick={doLogout}>logout</button>
+    <Button variant="link" onClick={doLogout}>logout</Button>
   )
 }
 

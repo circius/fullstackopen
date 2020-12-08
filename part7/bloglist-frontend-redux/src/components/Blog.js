@@ -1,6 +1,7 @@
 import React from 'react'
 import { useDispatch } from 'react-redux'
 import { Link } from 'react-router-dom'
+import { Button } from 'react-bootstrap'
 
 import { blogsDeleteOne } from '../reducers/blogsReducer'
 import { warn } from '../reducers/warnReducer'
@@ -8,21 +9,13 @@ import { warn } from '../reducers/warnReducer'
 const Blog = ({ blog, user }) => {
   const dispatch = useDispatch()
 
-  const blogStyle = {
-    paddingTop: 10,
-    paddingLeft: 2,
-    border: 'solid',
-    borderWidth: 1,
-    marginBottom: 5
-  }
-
   const doSelfDelete = async () => {
     dispatch(warn("deleted a blog"))
     dispatch(blogsDeleteOne(blog))
   }
 
   const DeleteButton = ({ doSelfDelete }) => (
-    <button onClick={doSelfDelete}>delete</button>
+    <Button variant="link" onClick={doSelfDelete}>❌</Button>
   )
 
   const conditionalDeleteButton = (user, blog) => {
@@ -32,7 +25,7 @@ const Blog = ({ blog, user }) => {
 
 
   return (
-    < div style={blogStyle}>
+    < div >
       <Link to={`/blogs/${blog.id}`}>{blog.title} - {blog.author}</Link>
       {conditionalDeleteButton(user, blog)}
     </div >
