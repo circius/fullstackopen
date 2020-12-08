@@ -1,22 +1,12 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { useDispatch } from 'react-redux'
+import { Link } from 'react-router-dom'
 
-import { blogsLikeOne, blogsDeleteOne } from '../reducers/blogsReducer'
-import { tell } from '../reducers/tellReducer'
+import { blogsDeleteOne } from '../reducers/blogsReducer'
 import { warn } from '../reducers/warnReducer'
 
-import ToggleButton from './ToggleButton'
-import BlogInfo from './BlogInfo'
-
-const Blog = ({ blog, user, updateBlog, deleteBlog }) => {
+const Blog = ({ blog, user }) => {
   const dispatch = useDispatch()
-  const [showDetails, setShowDetails] = useState(false)
-
-  const showWhenVisible = {
-    display: showDetails ? '' : 'none',
-  }
-
-  const toggleVisibility = () => setShowDetails(!showDetails)
 
   const blogStyle = {
     paddingTop: 10,
@@ -24,11 +14,6 @@ const Blog = ({ blog, user, updateBlog, deleteBlog }) => {
     border: 'solid',
     borderWidth: 1,
     marginBottom: 5
-  }
-
-  const doLike = () => {
-    dispatch(tell('liked a blog'))
-    dispatch(blogsLikeOne(blog))
   }
 
   const doSelfDelete = async () => {
@@ -48,11 +33,7 @@ const Blog = ({ blog, user, updateBlog, deleteBlog }) => {
 
   return (
     < div style={blogStyle}>
-      { blog.title} - { blog.author}
-      <ToggleButton label={showDetails ? 'hide' : 'view'} toggleFunction={toggleVisibility} />
-      <div style={showWhenVisible} className="blogInfo">
-        <BlogInfo blog={blog} doLike={doLike} />
-      </div>
+      <Link to={`/blogs/${blog.id}`}>{blog.title} - {blog.author}</Link>
       {conditionalDeleteButton(user, blog)}
     </div >
   )
