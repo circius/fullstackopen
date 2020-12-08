@@ -1,6 +1,6 @@
 import React from 'react'
 import { useDispatch } from 'react-redux'
-import { Button } from 'react-bootstrap'
+import { Button, Form } from 'react-bootstrap'
 
 import { useField } from '../hooks/useField'
 import { blogAddComment } from '../reducers/blogsReducer'
@@ -13,10 +13,10 @@ const AddCommentForm = ({ blog }) => {
     dispatch(blogAddComment(blog, comment.value))
   }
   return (
-    <form onSubmit={doAddComment}>
-      <input {...comment} />
+    <Form onSubmit={doAddComment}>
+      <Form.Control {...comment} placeholder="new comment" />
       <Button variant="outline-primary">add comment</Button>
-    </form>
+    </Form>
   )
 }
 
