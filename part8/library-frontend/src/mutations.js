@@ -13,3 +13,12 @@ mutation newBook ($title:String!, $author: String!, $published: Int, $genres:[St
   }
 }
 `
+
+export const AUTHOR_CHANGE_BIRTHYEAR = gql`
+mutation editAuthor ($name:String!, $setBornTo:Int!) {
+  editAuthor(name: $name, setBornTo: $setBornTo) {
+    name
+    born
+  }
+}
+`
