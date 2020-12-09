@@ -22,6 +22,7 @@ const Authors = (props) => {
   return (
     <div>
       <AuthorInfo authors={authors} />
+      <h3>Author Birthyear form</h3>
       <AuthorBirthyear />
     </div>
   )
