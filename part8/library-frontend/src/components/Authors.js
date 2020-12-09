@@ -1,7 +1,8 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import { useQuery } from '@apollo/client'
 
 import { ALL_AUTHORS } from '../queries'
+import Loading from './Loading'
 
 const Authors = (props) => {
   const result = useQuery(ALL_AUTHORS)
@@ -11,7 +12,7 @@ const Authors = (props) => {
   }
 
   if (result.loading) {
-    return <div>loading...</div>
+    return <Loading />
   }
 
   const authors = result.data.allAuthors
