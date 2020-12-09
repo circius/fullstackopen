@@ -46,7 +46,7 @@ const useResource = (baseUrl) => {
 }
 
 const App = () => {
-  const content = useField('text')
+    const content = useField('text')
   const name = useField('text')
   const number = useField('text')
 
@@ -67,7 +67,7 @@ const App = () => {
     <div>
       <h2>notes</h2>
       <form onSubmit={handleNoteSubmit}>
-        <input {...content} />
+          <input {...content} />
         <button>create</button>
       </form>
       {notes.map(n => <p key={n.id}>{n.content}</p>)}
