@@ -113,10 +113,10 @@ const resolvers = {
       .filter(book => !args.author ? true : book.author === args.author)
       .filter(book => !args.genre ? true : book.genres.includes(args.genre)),
     allAuthors: () => authors
-      .map(author => ({
-        name: author.name,
-        bookCount: books.filter(book => book.author === author.name).length
-      }))
+  },
+  Author: {
+    bookCount: root => books.filter(book => book.author === root.name).length
+  },
   }
 }
 
