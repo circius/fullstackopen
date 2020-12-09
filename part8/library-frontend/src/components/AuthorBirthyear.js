@@ -24,7 +24,7 @@ const AuthorBirthyear = () => {
 
   useEffect(() => {
     result.data && setOptions(authorsGetOptions(result.data.allAuthors))
-  }, [])
+  }, [result])
 
   const changeBirthyear = e => {
     e.preventDefault()
