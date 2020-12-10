@@ -1,5 +1,4 @@
 const { gql } = require('apollo-server')
-const { argsToArgsConfig } = require('graphql/type/definition')
 
 
 const Author = require('./models/Author')
@@ -17,6 +16,7 @@ const resolvers = {
         author && (query.author = author._id)
       }
       if (args.genre) query.genres = { $in: args.genre }
+
       const books = await Book.find(query)
       return books
     },
