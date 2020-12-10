@@ -26,14 +26,20 @@ const resolvers = {
   },
   Mutation: {
     addBook: async (_, args) => {
-      const author = await Author.findOne({ name: args.author })
-      if (!author) {
-        const newAuthor = await Author({ name: args.author }).save()
-        const newAuthorId = newAuthor._id
+      const getAuthor = async name => {
+        const author = await Author.findOne({ name })
+        if (!author) {
+          const newAuthor = await Author({ name }).save()
+          return newAuthor
+        } else {
+          return author
+        }
       }
+      const author = await getAuthor(args.author)
+
       const book = Book({
         title: args.title,
-        author: author ? author._id : newAuthorId,
+        author: author._id,
         published: args.published,
         genres: args.genres ? args.genres : []
       }
