@@ -29,6 +29,9 @@ const resolvers = {
     allAuthors: async () => {
       const authors = await Author.find({})
       return authors
+    },
+    me: async (_, __, { currentUser }) => {
+      return currentUser
     }
   },
   Author: {
