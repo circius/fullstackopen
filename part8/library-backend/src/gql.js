@@ -11,10 +11,14 @@ const resolvers = {
     bookCount: () => Book.find({}).then(books => books.length),
     authorCount: () => Author.find({}).then(authors => authors.length),
     allBooks: async (_, args) => {
-      const books = await Book.find({})
+      let query = {}
+      if (args.author) {
+        const author = Author.findOne({ name: args.author })
+        author && (query.author = author._id)
+      }
+      if (args.genre) query.genres = { $in: args.genre }
+      const books = await Book.find(query)
       return books
-        .filter(book => !args.author ? true : book.author === args.author)
-        .filter(book => !args.genre ? true : book.genres.includes(args.genre))
     },
     allAuthors: async () => {
       const authors = await Author.find({})
