@@ -1,4 +1,4 @@
-const { gql } = require('apollo-server')
+const { gql, UserInputError } = require('apollo-server')
 
 
 const Author = require('./models/Author')
@@ -32,11 +32,17 @@ const resolvers = {
     addBook: async (_, args) => {
       const getAuthor = async name => {
         const author = await Author.findOne({ name })
-        if (!author) {
-          const newAuthor = await Author({ name }).save()
-          return newAuthor
-        } else {
-          return author
+        try {
+          if (!author) {
+            const newAuthor = await Author({ name }).save()
+            return newAuthor
+          } else {
+            return author
+          }
+        } catch (error) {
+          throw new UserInputError(error.message, {
+            invalidArgs: args,
+          })
         }
       }
       const author = await getAuthor(args.author)
@@ -48,7 +54,14 @@ const resolvers = {
         genres: args.genres ? args.genres : []
       }
       )
-      const result = await book.save()
+      try {
+        await book.save()
+      } catch (error) {
+        throw new UserInputError(error.message, {
+          invalidArgs: args,
+        })
+      }
+
       return result
     },
     editAuthor: async (_, args) => {
