@@ -10,20 +10,26 @@ const resolvers = {
   Query: {
     bookCount: () => Book.find({}).then(books => books.length),
     authorCount: () => Author.find({}).then(authors => authors.length),
-    // allBooks: (_, args) => books
-    //   .filter(book => !args.author ? true : book.author === args.author)
-    //   .filter(book => !args.genre ? true : book.genres.includes(args.genre)),
-    // allAuthors: () => authors
+    allBooks: async (_, args) => {
+      const books = await Book.find({})
+      return books
+        .filter(book => !args.author ? true : book.author === args.author)
+        .filter(book => !args.genre ? true : book.genres.includes(args.genre))
+    },
+    allAuthors: async () => {
+      const authors = await Author.find({})
+      return authors
+    }
   },
-  // Author: {
-  //   bookCount: root => {books.filter(book => book.author === root.name).length}
-  // },
+  Author: {
+    bookCount: root => Book.find({ author: root._id }).then(books => books.length)
+  },
   Mutation: {
     addBook: async (_, args) => {
       const author = await Author.findOne({ name: args.author })
       if (!author) {
-        const newAuthor = Author({ name: args.author })
-        const newAuthorId = await newAuthor.save()._id
+        const newAuthor = await Author({ name: args.author }).save()
+        const newAuthorId = newAuthor._id
       }
       const book = Book({
         title: args.title,
@@ -45,14 +51,14 @@ const resolvers = {
 
   }
 }
-// allBooks(author: String, genre:String): [Book]!
-// allAuthors: [Author]!
+
 
 const typeDefs = gql`
   type Query {
     bookCount: Int!
     authorCount: Int!
-
+    allBooks(author: String, genre:String): [Book]!
+    allAuthors: [Author]!
   }
   type Book {
     title: String!
