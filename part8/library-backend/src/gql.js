@@ -1,4 +1,5 @@
 const { gql } = require('apollo-server')
+const { argsToArgsConfig } = require('graphql/type/definition')
 
 
 const Author = require('./models/Author')
@@ -34,14 +35,13 @@ const resolvers = {
       const result = await book.save()
       return result
     },
-    //   editAuthor: (_, args) => {
-    //     const author = authors.find(author => author.name === args.name)
-    //     if (!author) return null
-    //     const updated = { ...author, born: args.setBornTo }
-    //     authors = authors.map(
-    //       author => author.name === updated.name ? updated : author)
-    //     return updated
-    //   },
+    editAuthor: async (_, args) => {
+      const author = await Author.findOneAndUpdate(
+        { name: args.name },
+        { born: args.setBornTo },
+        { new: true })
+      return author
+    },
 
   }
 }
@@ -74,14 +74,15 @@ type Mutation {
       published: Int,
       genres: [String]
     ): Book,
+    editAuthor(
+      name: String!,
+      setBornTo: Int!
+    ): Author
 
   }
 
 `
 
-// editAuthor(
-//   name: String!,
-//   setBornTo: Int!
-// ): Author
+
 
 module.exports = { resolvers, typeDefs }
