@@ -1,5 +1,5 @@
 const { gql } = require('apollo-server')
-const { v1: uuid } = require('uuid')
+
 
 const Author = require('./models/Author')
 const Book = require('./models/Book')
@@ -17,26 +17,33 @@ const resolvers = {
   // Author: {
   //   bookCount: root => {books.filter(book => book.author === root.name).length}
   // },
-  // Mutation: {
-  //   addBook: (_, args) => {
-  //     const book = { ...args, id: uuid(), genres: args.genres ? args.genres : [] }
-  //     books = books.concat(book)
-  //     if (!authors.includes(book.author)) {
-  //       const author = { name: book.author, id: uuid() }
-  //       authors = authors.concat(author)
-  //     }
-  //     return book
-  //   },
-  //   editAuthor: (_, args) => {
-  //     const author = authors.find(author => author.name === args.name)
-  //     if (!author) return null
-  //     const updated = { ...author, born: args.setBornTo }
-  //     authors = authors.map(
-  //       author => author.name === updated.name ? updated : author)
-  //     return updated
-  //   },
+  Mutation: {
+    addBook: async (_, args) => {
+      const author = await Author.findOne({ name: args.author })
+      if (!author) {
+        const newAuthor = Author({ name: args.author })
+        const newAuthorId = await newAuthor.save()._id
+      }
+      const book = Book({
+        title: args.title,
+        author: author ? author._id : newAuthorId,
+        published: args.published,
+        genres: args.genres ? args.genres : []
+      }
+      )
+      const result = await book.save()
+      return result
+    },
+    //   editAuthor: (_, args) => {
+    //     const author = authors.find(author => author.name === args.name)
+    //     if (!author) return null
+    //     const updated = { ...author, born: args.setBornTo }
+    //     authors = authors.map(
+    //       author => author.name === updated.name ? updated : author)
+    //     return updated
+    //   },
 
-  // }
+  }
 }
 // allBooks(author: String, genre:String): [Book]!
 // allAuthors: [Author]!
@@ -60,20 +67,21 @@ const typeDefs = gql`
     bookCount: Int!,
     id: ID!
   }
+type Mutation {
+    addBook(
+      title: String!
+      author: String!
+      published: Int,
+      genres: [String]
+    ): Book,
+
+  }
 
 `
 
-// type Mutation {
-//   addBook(
-//     title: String!
-//     author: String!
-//     published: Int,
-//     genres: [String]
-//   ): Book,
-//   editAuthor(
-//     name: String!,
-//     setBornTo: Int!
-//   ): Author
-// }
+// editAuthor(
+//   name: String!,
+//   setBornTo: Int!
+// ): Author
 
 module.exports = { resolvers, typeDefs }
