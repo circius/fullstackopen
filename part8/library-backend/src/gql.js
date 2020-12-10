@@ -1,9 +1,15 @@
+const jwt = require('jsonwebtoken')
 const { gql, UserInputError } = require('apollo-server')
-
 
 const Author = require('./models/Author')
 const Book = require('./models/Book')
-// const { authors, books } = require('../testdata')
+const User = require('./models/User')
+
+const errorHandler = error => {
+  throw new UserInputError(error.message, {
+    invalidArgs: args,
+  })
+}
 
 const resolvers = {
   Query: {
@@ -26,7 +32,8 @@ const resolvers = {
     }
   },
   Author: {
-    bookCount: root => Book.find({ author: root._id }).then(books => books.length)
+    bookCount: root => Book
+      .find({ author: root._id }).then(books => books.length)
   },
   Mutation: {
     addBook: async (_, args) => {
@@ -40,9 +47,7 @@ const resolvers = {
             return author
           }
         } catch (error) {
-          throw new UserInputError(error.message, {
-            invalidArgs: args,
-          })
+          errorHandler(error)
         }
       }
       const author = await getAuthor(args.author)
@@ -57,9 +62,7 @@ const resolvers = {
       try {
         await book.save()
       } catch (error) {
-        throw new UserInputError(error.message, {
-          invalidArgs: args,
-        })
+        errorHandler(error)
       }
 
       return result
@@ -71,6 +74,26 @@ const resolvers = {
         { new: true })
       return author
     },
+    createUser: (_, args) => {
+      const user = User(
+        { username: args.username, favoriteGenre: args.favoriteGenre })
+
+      return user.save()
+        .catch(errorHandler)
+    },
+    login: async (_, args) => {
+      const PASSWORD = "terces"
+      const user = await User.findOne({ username: args.username })
+      if (!user || args.password !== PASSWORD) {
+        throw new UserInputError("wrong credentials")
+      }
+
+      const userForToken = {
+        username: user.username,
+        id: user._id
+      }
+      return { value: jwt.sign(userForToken, process.env.SECRET) }
+    }
 
   }
 }
@@ -82,7 +105,19 @@ const typeDefs = gql`
     authorCount: Int!
     allBooks(author: String, genre:String): [Book]!
     allAuthors: [Author]!
+    me: User
   }
+
+  type User {
+    username: String!
+    favoriteGenre: String!
+    id: ID!
+  }
+
+  type Token {
+    value: String!
+  }
+
   type Book {
     title: String!
     published: Int
@@ -107,7 +142,14 @@ type Mutation {
       name: String!,
       setBornTo: Int!
     ): Author
-
+    createUser(
+      username: String!
+      favoriteGenre: String!
+    ): User
+    login(
+      username: String!
+      password: String!
+    ): Token
   }
 
 `
