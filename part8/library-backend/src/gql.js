@@ -23,7 +23,8 @@ const resolvers = {
       }
       if (args.genre) query.genres = { $in: args.genre }
 
-      const books = await Book.find(query)
+      const books = await Book.find(query).populate('author')
+      console.log(books)
       return books
     },
     allAuthors: async () => {
@@ -127,7 +128,7 @@ const typeDefs = gql`
   type Book {
     title: String!
     published: Int
-    author: String!
+    author: Author!
     genres: [String]!
     id: ID!
   }
