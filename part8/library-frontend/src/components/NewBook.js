@@ -22,15 +22,18 @@ const NewBook = (props) => {
 
   const submit = async (event) => {
     event.preventDefault()
-
-    createBook({
-      variables: {
-        title: title.value,
-        published: Number(published.value),
-        author: author.value,
-        genres: genres.value || []
-      }
-    })
+    try {
+      createBook({
+        variables: {
+          title: title.value,
+          published: Number(published.value),
+          author: author.value,
+          genres: genres.value || []
+        }
+      })
+    } catch {
+      console.log('something went wrong');
+    }
 
     title.reset()
     published.reset()

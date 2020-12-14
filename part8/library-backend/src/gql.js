@@ -55,21 +55,24 @@ const resolvers = {
           errorHandler(error)
         }
       }
+      console.log(`currentUser: ${currentUser}`)
       if (!currentUser) return null
 
       const author = await getAuthor(args.author)
+      console.log(author)
 
       const book = Book({
         title: args.title,
-        author: author._id,
+        author: author,
         published: args.published,
         genres: args.genres ? args.genres : []
       }
       )
       try {
-        await book.save()
+        result = await book.save()
       } catch (error) {
         errorHandler(error)
+        return null
       }
 
       return result
