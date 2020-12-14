@@ -18,7 +18,7 @@ const resolvers = {
     allBooks: async (_, args) => {
       let query = {}
       if (args.author) {
-        const author = Author.findOne({ name: args.author })
+        const author = await Author.findOne({ name: args.author })
         author && (query.author = author._id)
       }
       if (args.genre) query.genres = { $in: args.genre }
@@ -33,7 +33,8 @@ const resolvers = {
     },
     me: async (_, __, { currentUser }) => {
       return currentUser
-    }
+    },
+    allUsers: () => User.find({}).then(users => users)
   },
   Author: {
     bookCount: root => Book
@@ -112,7 +113,8 @@ const typeDefs = gql`
     authorCount: Int!
     allBooks(author: String, genre:String): [Book]!
     allAuthors: [Author]!
-    me: User
+    me: User,
+    allUsers:[User]!
   }
 
   type User {
