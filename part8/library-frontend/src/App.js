@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react'
 import { useApolloClient } from '@apollo/client'
 import Authors from './components/Authors'
 import Books from './components/Books'
+import Recommendations from './components/Recommendations'
 import NewBook from './components/NewBook'
 import Login from './components/Login'
 
@@ -30,6 +31,7 @@ const App = () => {
         {!token ?
           <button onClick={() => setPage('login')}>login</button> :
           (<React.Fragment>
+            <button onClick={() => setPage('recommendations')}>recommendations</button>
             <button onClick={() => setPage('add')}>add book</button>
             <button onClick={() => logout()}>logout</button>
           </React.Fragment>)
@@ -45,6 +47,7 @@ const App = () => {
         show={page === 'books'}
         token={token}
       />
+
       <Login
         show={page === 'login'}
         setError={setError}
@@ -54,8 +57,9 @@ const App = () => {
       <NewBook
         show={page === 'add'}
       />
+      <Recommendations show={page === 'recommendations'} />
     </div>
   )
 }
 
-export default App
+export default App 
