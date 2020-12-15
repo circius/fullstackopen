@@ -8,6 +8,7 @@ fragment BookDetails on Book {
   }
   published
   genres
+  id
 }
 `
 
@@ -16,6 +17,7 @@ fragment AuthorDetails on Author {
   name
   born
   bookCount
+  id
 }
 
 `
