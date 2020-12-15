@@ -1,9 +1,12 @@
 const jwt = require('jsonwebtoken')
 const { gql, UserInputError } = require('apollo-server')
+const { PubSub } = require('apollo-server')
 
 const Author = require('./models/Author')
 const Book = require('./models/Book')
 const User = require('./models/User')
+
+const pubsub = new PubSub()
 
 const errorHandler = error => {
   throw new UserInputError(error.message, {
@@ -56,7 +59,7 @@ const resolvers = {
           errorHandler(error)
         }
       }
-      console.log(`currentUser: ${currentUser}`)
+
       if (!currentUser) return null
 
       const author = await getAuthor(args.author)
@@ -74,7 +77,7 @@ const resolvers = {
         errorHandler(error)
         return null
       }
-
+      pubsub.publish('BOOK_ADDED', { bookAdded: result })
       return result
     },
     editAuthor: async (_, args, { currentUser }) => {
@@ -106,6 +109,11 @@ const resolvers = {
       return { value: jwt.sign(userForToken, process.env.SECRET) }
     }
 
+  },
+  Subscription: {
+    bookAdded: {
+      subscribe: () => pubsub.asyncIterator(['BOOK_ADDED'])
+    }
   }
 }
 
@@ -163,6 +171,9 @@ type Mutation {
       password: String!
     ): Token
   }
+type Subscription {
+  bookAdded: Book!
+}
 
 `
 
