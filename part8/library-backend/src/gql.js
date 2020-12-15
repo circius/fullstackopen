@@ -41,8 +41,7 @@ const resolvers = {
     allUsers: () => User.find({}).then(users => users)
   },
   Author: {
-    bookCount: root => Book
-      .find({ author: root._id }).then(books => books.length)
+    bookCount: root => root.books.length
   },
   Mutation: {
     addBook: async (_, args, { currentUser }) => {
@@ -78,6 +77,10 @@ const resolvers = {
         return null
       }
       pubsub.publish('BOOK_ADDED', { bookAdded: result })
+
+      const authorUpdate = { books: [...author.books, book._id] }
+      const updated = await Author.findByIdAndUpdate(author._id, authorUpdate, { new: true })
+
       return result
     },
     editAuthor: async (_, args, { currentUser }) => {
