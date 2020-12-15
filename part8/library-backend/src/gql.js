@@ -15,16 +15,17 @@ const resolvers = {
   Query: {
     bookCount: () => Book.find({}).then(books => books.length),
     authorCount: () => Author.find({}).then(authors => authors.length),
-    allBooks: async (_, args) => {
+    allBooks: async (_, args, { currentUser }) => {
       let query = {}
       if (args.author) {
         const author = await Author.findOne({ name: args.author })
         author && (query.author = author._id)
       }
       if (args.genre) query.genres = { $in: args.genre }
+      if (args.recommendation) query.genres = { $in: currentUser.favoriteGenre }
+
 
       const books = await Book.find(query).populate('author')
-      console.log(books)
       return books
     },
     allAuthors: async () => {
@@ -59,7 +60,6 @@ const resolvers = {
       if (!currentUser) return null
 
       const author = await getAuthor(args.author)
-      console.log(author)
 
       const book = Book({
         title: args.title,
@@ -114,7 +114,7 @@ const typeDefs = gql`
   type Query {
     bookCount: Int!
     authorCount: Int!
-    allBooks(author: String, genre:String): [Book]!
+    allBooks(author: String, genre:String, recommendation: Boolean): [Book]!
     allAuthors: [Author]!
     me: User,
     allUsers:[User]!
