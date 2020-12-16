@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/semi */
 
 export interface Inputs {
     height: number;
@@ -30,12 +31,12 @@ const parseArguments = (args: string[]): Inputs => {
 // bmiCalculator(5,5) -> UNHEALTHY
 // bmiCalculator(180,74) -> HEALTHY
 export const bmiCalculator = (height: number, weight: number): string => {
-    const healthyBmiP = (bmi: number): Boolean => {
+    const healthyBmiP = (bmi: number): boolean => {
         return 18.5 < bmi && bmi < 24.9
     }
     const heightM: number = height / 100
     const bmi: number = weight / (heightM * heightM)
-    const healthy: Boolean = healthyBmiP(bmi)
+    const healthy: boolean = healthyBmiP(bmi)
 
     switch (healthy) {
         case true:
