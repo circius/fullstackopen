@@ -1,5 +1,5 @@
 
-interface Inputs {
+export interface Inputs {
     height: number;
     weight: number;
 }
@@ -25,14 +25,11 @@ const parseArguments = (args: string[]): Inputs => {
     }
 }
 
-const { height, weight } = parseArguments(process.argv)
-
-
 // consumes a height (cm) and a weight (kgs) and produces a string
 // representing the corresponding health.
 // bmiCalculator(5,5) -> UNHEALTHY
 // bmiCalculator(180,74) -> HEALTHY
-const bmiCalculator = (height: number, weight: number): string => {
+export const bmiCalculator = (height: number, weight: number): string => {
     const healthyBmiP = (bmi: number): Boolean => {
         return 18.5 < bmi && bmi < 24.9
     }
@@ -45,7 +42,12 @@ const bmiCalculator = (height: number, weight: number): string => {
             return HEALTHY
         case false:
             return UNHEALTHY
+        default:
+            return "undefined"
     }
 }
 
-console.log(bmiCalculator(height, weight))
+if (require.main === module) {
+    const { height, weight } = parseArguments(process.argv)
+    console.log(bmiCalculator(height, weight))
+}
