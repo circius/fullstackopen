@@ -1,7 +1,7 @@
 import express from 'express';
 import cors from 'cors';
 
-import pingRouter from './src/controllers/ping';
+import pingRouter from './src/routers/ping';
 
 const app = express();
 app.use(express.json());
