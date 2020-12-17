@@ -7,7 +7,6 @@ const patientRouter = Router();
 patientRouter.get('/', (_req, res) => {
     const patients: NonSensitivePatient[] = patientService.getNonSensitivePatients();
     res.send(patients);
-}
-);
+});
 
 export = patientRouter;

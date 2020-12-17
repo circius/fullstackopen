@@ -11,7 +11,7 @@ app.use(cors());
 
 app.use('/api/ping/', pingRouter);
 app.use('/api/diagnosis', diagnosisRouter);
-app.use('/api/patient', patientRouter);
+app.use('/api/patients', patientRouter);
 
 const PORT = 3001;
 
