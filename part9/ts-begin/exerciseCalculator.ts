@@ -1,4 +1,4 @@
-interface Training {
+export interface Training {
     daysPassed: number,
     daysTrained: number,
     targetHours: number,
@@ -13,7 +13,7 @@ enum Rating {
     Excellent
 }
 
-interface trainingInputs {
+export interface trainingInputs {
     target: number;
     trainingRecord: number[];
 }
@@ -65,7 +65,7 @@ const getRating = (dailyAverage: number, target: number): Rating => {
 
 // consumes an array representing hours trained per day and a target number.
 // produces a Training object that summarises the result.
-const calculateExercises = (actual: number[], target: number): Training => {
+export const calculateExercises = (actual: number[], target: number): Training => {
     const daysPassed: number = actual.length;
     const daysTrained: number = actual
         .filter(n => n !== 0).length;
@@ -84,7 +84,12 @@ const calculateExercises = (actual: number[], target: number): Training => {
     };
 };
 
-const pertinentArgs = process.argv.slice(2);
-const { target, trainingRecord } = parseTrainingArguments(pertinentArgs);
+if (require.main === module) {
+    const pertinentArgs = process.argv.slice(2);
+    const { target, trainingRecord } = parseTrainingArguments(pertinentArgs);
 
-console.log(calculateExercises(trainingRecord, target));
+    console.log(calculateExercises(trainingRecord, target));
+}
+
+
+
