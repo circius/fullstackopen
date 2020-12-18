@@ -1,18 +1,12 @@
 import React from 'react'
-import { Course } from '../types'
+import { CoursePart } from '../types'
+import Part from './part'
 
 
-const CourseParts: React.FC<{ courseParts: Array<Course> }> = ({ courseParts }) => (
+
+const CourseParts: React.FC<{ courseParts: Array<CoursePart> }> = ({ courseParts }) => (
     <div>
-        <p>
-            {courseParts[0].name} {courseParts[0].exerciseCount}
-        </p>
-        <p>
-            {courseParts[1].name} {courseParts[1].exerciseCount}
-        </p>
-        <p>
-            {courseParts[2].name} {courseParts[2].exerciseCount}
-        </p>
+        { courseParts.map((coursePart, idx) => <Part key={idx} coursePart={coursePart} />)}
     </div>
 )
 
