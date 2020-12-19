@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { NewPatient, Gender } from './types';
+import { NewPatient, Gender, Entry } from './types';
 
 const isString = (text: any): text is string => {
     return (typeof (text) === "string" || text instanceof String);
@@ -25,6 +25,22 @@ const isGender = (maybeGender: any): maybeGender is Gender => {
     return Object.values(Gender).includes(maybeGender);
 };
 
+const isEntries = (maybeEntries: any): maybeEntries is Entry[] => {
+    return Array.isArray(maybeEntries) && maybeEntries.filter(
+        entry => !isEntry(entry)).length === 0;
+};
+
+const isEntry = (maybeEntry: any): maybeEntry is Entry => {
+    return typeof (maybeEntry) === 'object';
+};
+
+const parseEntries = (maybeEntries: any): Entry[] => {
+    if (!maybeEntries || !isEntries(maybeEntries)) {
+        throw new Error('missing or invalid entries');
+    }
+    return maybeEntries;
+};
+
 /* eslint-disable @typescript-eslint/explicit-module-boundary-types */
 export const toNewPatient = (maybeNewPatient: any): NewPatient => {
     return {
@@ -32,6 +48,7 @@ export const toNewPatient = (maybeNewPatient: any): NewPatient => {
         dateOfBirth: parseString(maybeNewPatient.dateOfBirth, "missing or invalid dateOfBirth"),
         ssn: parseString(maybeNewPatient.ssn, "missing or invalid ssn"),
         gender: parseGender(maybeNewPatient.gender),
-        occupation: parseString(maybeNewPatient.occupation, "missing or invalid occupation")
+        occupation: parseString(maybeNewPatient.occupation, "missing or invalid occupation"),
+        entries: parseEntries(maybeNewPatient.entries)
     };
 };
