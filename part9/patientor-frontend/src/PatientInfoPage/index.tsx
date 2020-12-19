@@ -1,7 +1,9 @@
 import axios from 'axios';
+import { stringify } from 'querystring';
 import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom';
-import { Icon, List, ListItem, Table } from 'semantic-ui-react';
+import { Icon, IconProps, List, ListItem } from 'semantic-ui-react';
+import { SemanticICONS } from 'semantic-ui-react/dist/commonjs/generic';
 import { apiBaseUrl } from '../constants';
 import { useStateValue } from '../state'
 import { Patient } from '../types';
@@ -34,17 +36,15 @@ const PatientInfoPage: React.FC = () => {
     }, [dispatch, id, patient])
 
     const PatientHeader: React.FC<{ patient: Patient }> = ({ patient }) => {
-        const iconDict = {
+        const iconDict: { [index: string]: string } = {
             "male": "mars",
             "female": "venus",
             "other": "genderless"
         }
-        const icon = iconDict[patient.gender]
-
-        console.log(icon)
+        const getIcon = (gender: string): SemanticICONS => iconDict[gender] as SemanticICONS;
 
         return (
-            <h2>{patient.name} <Icon name="mars" /></h2>
+            <h2>{patient.name} <Icon name={getIcon(patient.gender)} /></h2>
         )
     }
 
@@ -61,17 +61,11 @@ const PatientInfoPage: React.FC = () => {
                 {error ? error : null}
             </div>
             {!patient ? 'loading'
-                : <Table celled>
-                    <Table.Header>
-                        <Table.Row>
-                            {Object.keys(patient).map(key => <Table.Cell>{key}</Table.Cell>)}
-                        </Table.Row>
-                    </Table.Header>
-                    <Table.Row>
-                        {Object.keys(patient).map(key => <Table.Cell>{patient[key.toString()]}</Table.Cell>)}
-                    </Table.Row>
-
-                </Table>}
+                : (
+                    <div>
+                        <PatientHeader patient={patient} />
+                        <PatientDetails patient={patient} />
+                    </div>)}
         </div>
     )
 }
