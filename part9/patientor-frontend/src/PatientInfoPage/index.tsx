@@ -1,9 +1,6 @@
 import axios from 'axios';
-import { stringify } from 'querystring';
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { Icon, IconProps, List, ListItem } from 'semantic-ui-react';
-import { SemanticICONS } from 'semantic-ui-react/dist/commonjs/generic';
 import { apiBaseUrl } from '../constants';
 import { useStateValue, addPatient } from '../state';
 import { Patient } from '../types';
@@ -49,7 +46,9 @@ const PatientInfoPage: React.FC = () => {
                     <div>
                         <PatientHeader patient={patient} />
                         <PatientDetails patient={patient} />
-                        <PatientEntries patient={patient} />
+                        {patient.entries ?
+                            <PatientEntries entries={patient.entries} /> :
+                            null}
                     </div>)}
         </div>
     );
