@@ -1,9 +1,15 @@
-import React from 'react'
+import React from 'react';
+import { useStateValue } from '../state';
+import { Patient, Entry } from '../types';
+
+
 
 const PatientEntries: React.FC<{ patient: Patient }> = ({ patient }) => {
-    return (
-        <h3>entries</h3>
-    )
-}
+    const [{ diagnoses }] = useStateValue();
 
-export default PatientEntries
+
+
+    return <span> "entries here later"</span>;
+};
+
+export default PatientEntries;

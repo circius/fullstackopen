@@ -9,17 +9,17 @@ export const setPatientList = (payload: Patient[]): Action => ({
 export const addPatient = (payload: Patient): Action => ({
   type: "ADD_PATIENT",
   payload
-})
+});
 
 export const setDiagnosisList = (payload: Diagnosis[]): Action => ({
   type: "SET_DIAGNOSIS_LIST",
   payload
-})
+});
 
 export type Action =
   | {
-    type: "SET_PATIENT_LIST",
-    payload: Patient[]
+    type: "SET_PATIENT_LIST";
+    payload: Patient[];
   }
   | {
     type: "ADD_PATIENT";
@@ -27,7 +27,7 @@ export type Action =
   }
   | {
     type: "SET_DIAGNOSIS_LIST";
-    payload: Diagnosis[]
+    payload: Diagnosis[];
   };
 
 export const reducer = (state: State, action: Action): State => {

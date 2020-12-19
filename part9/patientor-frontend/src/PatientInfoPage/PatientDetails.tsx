@@ -7,6 +7,6 @@ const PatientDetails: React.FC<{ patient: Patient }> = ({ patient }) => (
         <ListItem>ssn: {patient.ssn}</ListItem>
         <ListItem>occupation: {patient.occupation}</ListItem>
     </List>
-)
+);
 
-export default PatientDetails
+export default PatientDetails;
