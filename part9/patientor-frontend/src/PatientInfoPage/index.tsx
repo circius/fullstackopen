@@ -8,6 +8,10 @@ import { apiBaseUrl } from '../constants';
 import { useStateValue, addPatient } from '../state'
 import { Patient } from '../types';
 
+import PatientHeader from './PatientHeader'
+import PatientDetails from './PatientDetails'
+import PatientEntries from './PatientEntries'
+
 const PatientInfoPage: React.FC = () => {
     const [{ patients }, dispatch] = useStateValue();
     const [patient, setPatient] = useState<Patient | undefined>();
@@ -35,26 +39,6 @@ const PatientInfoPage: React.FC = () => {
 
     }, [dispatch, id, patient])
 
-    const PatientHeader: React.FC<{ patient: Patient }> = ({ patient }) => {
-        const iconDict: { [index: string]: string } = {
-            "male": "mars",
-            "female": "venus",
-            "other": "genderless"
-        }
-        const getIcon = (gender: string): SemanticICONS => iconDict[gender] as SemanticICONS;
-
-        return (
-            <h2>{patient.name} <Icon name={getIcon(patient.gender)} /></h2>
-        )
-    }
-
-    const PatientDetails: React.FC<{ patient: Patient }> = ({ patient }) => (
-        <List>
-            <ListItem>ssn: {patient.ssn}</ListItem>
-            <ListItem>occupation: {patient.occupation}</ListItem>
-        </List>
-    )
-
     return (
         <div>
             <div>
@@ -65,6 +49,7 @@ const PatientInfoPage: React.FC = () => {
                     <div>
                         <PatientHeader patient={patient} />
                         <PatientDetails patient={patient} />
+                        <PatientEntries patient={patient} />
                     </div>)}
         </div>
     )
