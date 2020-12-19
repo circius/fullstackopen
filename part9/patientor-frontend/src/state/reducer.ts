@@ -53,6 +53,11 @@ export const reducer = (state: State, action: Action): State => {
           }
         };
       }
+    case "SET_DIAGNOSIS_LIST":
+      return {
+        ...state,
+        diagnoses: action.payload
+      }
     default:
       return state;
   }
