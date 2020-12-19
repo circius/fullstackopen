@@ -5,7 +5,7 @@ import { useParams } from 'react-router-dom';
 import { Icon, IconProps, List, ListItem } from 'semantic-ui-react';
 import { SemanticICONS } from 'semantic-ui-react/dist/commonjs/generic';
 import { apiBaseUrl } from '../constants';
-import { useStateValue } from '../state'
+import { useStateValue, addPatient } from '../state'
 import { Patient } from '../types';
 
 const PatientInfoPage: React.FC = () => {
@@ -29,7 +29,7 @@ const PatientInfoPage: React.FC = () => {
 
         if (patient && isCensored(patient)) {
             getUncensoredPatient(id)
-                .then(patient => dispatch({ type: 'ADD_PATIENT', payload: patient }))
+                .then(patient => dispatch(addPatient(patient)))
                 .catch(error => setError(error))
         }
 
