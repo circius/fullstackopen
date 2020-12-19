@@ -11,7 +11,7 @@ export enum Gender {
 }
 
 export interface Patient {
-  [index: string]: string | string[] | Gender | undefined;
+  [index: string]: string | string[] | Gender | Entry[] | undefined;
   id: string;
   name: string;
   occupation: string;
