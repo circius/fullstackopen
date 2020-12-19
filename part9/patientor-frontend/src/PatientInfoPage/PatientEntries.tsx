@@ -1,15 +1,20 @@
 import React from 'react';
-import { useStateValue } from '../state';
-import { Patient, Entry } from '../types';
+import { List } from 'semantic-ui-react';
+import { Entry } from '../types';
 
+import PatientEntry from './PatientEntry'
 
+const PatientEntries: React.FC<{ entries: Entry[] }> = ({ entries }) => {
 
-const PatientEntries: React.FC<{ patient: Patient }> = ({ patient }) => {
-    const [{ diagnoses }] = useStateValue();
+    return (
+        <div>
+            <h3>entries</h3>
+            <List>
+                {entries.map(entry => <PatientEntry entry={entry} />)}
+            </List>
 
-
-
-    return <span> "entries here later"</span>;
+        </div>
+    )
 };
 
 export default PatientEntries;
