@@ -5,8 +5,42 @@ export interface Diagnosis {
 }
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
-export interface Entry {
+export type Entry =
+    | HospitalEntry
+    | OccupationalHealthcareEntry
+    | HealthCheckEntry;
+
+interface BaseEntry {
+    id: string,
+    date: string,
+    specialist: string,
+    description: string,
+    diagnosisCodes?: string[]
 }
+
+interface HealthCheckEntry extends BaseEntry {
+    type: 'HealthCheck',
+    healthCheckRating: number
+}
+
+interface HospitalEntry extends BaseEntry {
+    type: 'Hospital'
+
+    discharge?: {
+        date: string,
+        criteria: string
+    }
+}
+
+interface OccupationalHealthcareEntry extends BaseEntry {
+    type: 'OccupationalHealthcare',
+    employerName: string,
+    sickLeave?: {
+        startDate: string,
+        endDate: string
+    }
+}
+
 
 export interface Patient {
     id: string,
