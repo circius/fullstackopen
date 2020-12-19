@@ -4,7 +4,6 @@ export interface Diagnosis {
     latin?: string
 }
 
-// eslint-disable-next-line @typescript-eslint/no-empty-interface
 export type Entry =
     | HospitalEntry
     | OccupationalHealthcareEntry
@@ -18,12 +17,12 @@ interface BaseEntry {
     diagnosisCodes?: string[]
 }
 
-interface HealthCheckEntry extends BaseEntry {
+export interface HealthCheckEntry extends BaseEntry {
     type: 'HealthCheck',
     healthCheckRating: number
 }
 
-interface HospitalEntry extends BaseEntry {
+export interface HospitalEntry extends BaseEntry {
     type: 'Hospital'
 
     discharge?: {
@@ -32,7 +31,7 @@ interface HospitalEntry extends BaseEntry {
     }
 }
 
-interface OccupationalHealthcareEntry extends BaseEntry {
+export interface OccupationalHealthcareEntry extends BaseEntry {
     type: 'OccupationalHealthcare',
     employerName: string,
     sickLeave?: {

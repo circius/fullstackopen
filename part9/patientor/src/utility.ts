@@ -30,8 +30,8 @@ const isEntries = (maybeEntries: any): maybeEntries is Entry[] => {
         entry => !isEntry(entry)).length === 0;
 };
 
-const isEntry = (maybeEntry: any): maybeEntry is Entry => {
-    return typeof (maybeEntry) === 'object';
+const isEntry = (maybeEntry: any): boolean => {
+    return ['HealthCheck', 'HealthCheck', 'OccupationalHealthcare'].includes(maybeEntry);
 };
 
 const parseEntries = (maybeEntries: any): Entry[] => {
