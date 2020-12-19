@@ -10,7 +10,7 @@ app.use(express.json());
 app.use(cors());
 
 app.use('/api/ping/', pingRouter);
-app.use('/api/diagnosis', diagnosisRouter);
+app.use('/api/diagnoses', diagnosisRouter);
 app.use('/api/patients', patientRouter);
 
 const PORT = 3001;
