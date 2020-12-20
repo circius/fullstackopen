@@ -36,7 +36,13 @@ interface BaseEntry {
 
 export interface HealthCheckEntry extends BaseEntry {
   type: 'HealthCheck';
-  healthCheckRating: number;
+  healthCheckRating: healthRating;
+}
+
+export enum healthRating {
+  Good,
+  Middling,
+  Bad
 }
 
 export interface HospitalEntry extends BaseEntry {
