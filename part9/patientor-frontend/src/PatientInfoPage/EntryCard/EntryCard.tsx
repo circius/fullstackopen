@@ -5,7 +5,10 @@ import { HealthCheckEntry, healthRating, OccupationalHealthcareEntry, HospitalEn
 import BaseEntryCard from './BaseEntryCard'
 
 export const HospitalEntryCard: React.FC<{ entry: HospitalEntry }> = ({ entry }) => (
-    <BaseEntryCard entry={entry} metaString="Hospital visit" icon={<Icon name="hospital" />} />)
+    <BaseEntryCard entry={entry} metaString="Hospital visit" icon={<Icon name="hospital" />}>
+        {entry.discharge ? `discharged on ${entry.discharge.date} on grounds: ${entry.discharge.criteria}` : null}
+    </BaseEntryCard>
+)
 
 export const HealthCheckEntryCard: React.FC<{ entry: HealthCheckEntry }> = ({ entry }) => (
     <BaseEntryCard entry={entry} metaString="Healthcheck" icon={<Icon name="heart outline" />}>
