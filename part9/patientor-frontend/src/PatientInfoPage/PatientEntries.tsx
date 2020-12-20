@@ -2,7 +2,7 @@ import React from 'react';
 import { Card } from 'semantic-ui-react';
 import { Entry } from '../types';
 
-import PatientEntry from './PatientEntry'
+import PatientEntry from './EntryCard'
 
 const PatientEntries: React.FC<{ entries: Entry[] }> = ({ entries }) => {
 
