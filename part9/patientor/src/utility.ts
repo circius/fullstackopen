@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { NewPatient, Gender, NewEntry, Entry, BaseEntry, HealthRating, HealthCheckEntry, HospitalEntry, Discharge, OccupationalHealthcareEntry, SickLeave } from './types';
+import { NewPatient, Gender, NewEntry, Entry, BaseEntry, HealthCheckRating, HealthCheckEntry, HospitalEntry, Discharge, OccupationalHealthcareEntry, SickLeave } from './types';
 
 const isString = (text: any): text is string => {
     return (typeof (text) === "string" || text instanceof String);
@@ -53,9 +53,23 @@ export const toNewPatient = (maybeNewPatient: any): NewPatient => {
     };
 };
 
+const isStrings = (maybeStrings: any): maybeStrings is string[] => {
+    return (
+        Array.isArray(maybeStrings) &&
+        maybeStrings.filter(mybString => !isString(mybString)).length === 0
+    );
+
+};
+
 const parseDiagnosisCodes = (maybeCodes: any): string[] => {
-    console.log(maybeCodes);
-    return [];
+    if (!maybeCodes) {
+        return [];
+    } else
+        if (!isStrings(maybeCodes)) {
+            console.log("error with these codes: ", maybeCodes);
+            throw new Error('invalid diagnosis codes');
+        }
+    return maybeCodes;
 };
 
 export const toNewBaseEntry = (maybeEntry: any): Omit<BaseEntry, "id"> => ({
@@ -65,22 +79,40 @@ export const toNewBaseEntry = (maybeEntry: any): Omit<BaseEntry, "id"> => ({
     diagnosisCodes: parseDiagnosisCodes(maybeEntry.diagnosisCodes)
 });
 
-const parseHealthRating = (maybeRating: any): HealthRating => {
-    console.log(maybeRating);
-    return 0;
+const isHealthCheckRating = (maybeHealthCheckRating: any): maybeHealthCheckRating is HealthCheckRating => {
+    return Object.values(HealthCheckRating).includes(maybeHealthCheckRating);
+};
+
+const parseHealthCheckRating = (maybeRating: any): HealthCheckRating => {
+    if (!maybeRating || !isHealthCheckRating(maybeRating)) {
+        throw new Error("missing or invalid healthcheck rating");
+    }
+    return maybeRating;
 };
 
 const toNewHealthCheckEntry = (maybeEntry: any): Omit<HealthCheckEntry, "id"> => {
     return {
         ...toNewBaseEntry(maybeEntry),
         type: 'HealthCheck',
-        healthCheckRating: parseHealthRating(maybeEntry.healthCheckRating),
+        healthCheckRating: parseHealthCheckRating(maybeEntry.healthCheckRating),
     };
 };
 
+const isDischarge = (maybeDischarge: any): maybeDischarge is Discharge => {
+    return typeof (maybeDischarge.date) === "string" && typeof (maybeDischarge.criteria) === "string";
+};
+
 const parseDischarge = (maybeDischarge: Discharge | undefined): Discharge | undefined => {
-    console.log('maybeDischarge:', maybeDischarge);
-    return undefined;
+    if (!maybeDischarge) {
+        return undefined;
+    } else if (!isDischarge) {
+        throw new Error("invalid discharge");
+    }
+
+    return {
+        date: maybeDischarge.date,
+        criteria: maybeDischarge.criteria
+    };
 };
 
 const toHospitalEntry = (maybeEntry: any): Omit<HospitalEntry, "id"> => {
@@ -91,10 +123,23 @@ const toHospitalEntry = (maybeEntry: any): Omit<HospitalEntry, "id"> => {
     };
 };
 
-const parseSickLeave = (maybeSickLeave: SickLeave | undefined): SickLeave | undefined => {
-    console.log('maybeSickLeave:', maybeSickLeave);
+const isSickLeave = (maybeSickLeave: any): maybeSickLeave is SickLeave => {
+    return (
+        typeof (maybeSickLeave.startDate) === "string" &&
+        typeof (maybeSickLeave.endDate) === "string");
+};
 
-    return undefined;
+const parseSickLeave = (maybeSickLeave: SickLeave | undefined): SickLeave | undefined => {
+    if (!maybeSickLeave) {
+        return undefined;
+    } else if (!isSickLeave) {
+        throw new Error("invalid sick-leave");
+    }
+
+    return {
+        startDate: maybeSickLeave.startDate,
+        endDate: maybeSickLeave.endDate
+    };
 };
 
 const toOccupationalHealthcareEntry = (maybeEntry: any): Omit<OccupationalHealthcareEntry, "id"> => {
