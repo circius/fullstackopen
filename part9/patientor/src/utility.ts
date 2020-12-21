@@ -84,7 +84,7 @@ const isHealthCheckRating = (maybeHealthCheckRating: any): maybeHealthCheckRatin
 };
 
 const parseHealthCheckRating = (maybeRating: any): HealthCheckRating => {
-    if (!maybeRating || !isHealthCheckRating(maybeRating)) {
+    if ((!maybeRating && maybeRating !== 0) || !isHealthCheckRating(maybeRating)) {
         throw new Error("missing or invalid healthcheck rating");
     }
     return maybeRating;
