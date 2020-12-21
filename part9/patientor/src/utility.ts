@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { NewPatient, Gender, Entry } from './types';
+import { NewPatient, Gender, NewEntry, Entry, BaseEntry, HealthRating, HealthCheckEntry, HospitalEntry, Discharge, OccupationalHealthcareEntry, SickLeave } from './types';
 
 const isString = (text: any): text is string => {
     return (typeof (text) === "string" || text instanceof String);
@@ -51,4 +51,71 @@ export const toNewPatient = (maybeNewPatient: any): NewPatient => {
         occupation: parseString(maybeNewPatient.occupation, "missing or invalid occupation"),
         entries: parseEntries(maybeNewPatient.entries)
     };
+};
+
+const parseDiagnosisCodes = (maybeCodes: any): string[] => {
+    console.log(maybeCodes);
+    return [];
+};
+
+export const toNewBaseEntry = (maybeEntry: any): Omit<BaseEntry, "id"> => ({
+    date: parseString(maybeEntry.date, 'missing or invalid date'),
+    specialist: parseString(maybeEntry.specialist, ",missing or invalid specialist"),
+    description: parseString(maybeEntry.description, "missing or invalid description"),
+    diagnosisCodes: parseDiagnosisCodes(maybeEntry.diagnosisCodes)
+});
+
+const parseHealthRating = (maybeRating: any): HealthRating => {
+    console.log(maybeRating);
+    return 0;
+};
+
+const toNewHealthCheckEntry = (maybeEntry: any): Omit<HealthCheckEntry, "id"> => {
+    return {
+        ...toNewBaseEntry(maybeEntry),
+        type: 'HealthCheck',
+        healthCheckRating: parseHealthRating(maybeEntry.healthCheckRating),
+    };
+};
+
+const parseDischarge = (maybeDischarge: Discharge | undefined): Discharge | undefined => {
+    console.log('maybeDischarge:', maybeDischarge);
+    return undefined;
+};
+
+const toHospitalEntry = (maybeEntry: any): Omit<HospitalEntry, "id"> => {
+    return {
+        ...toNewBaseEntry(maybeEntry),
+        type: 'Hospital',
+        discharge: parseDischarge(maybeEntry.discharge),
+    };
+};
+
+const parseSickLeave = (maybeSickLeave: SickLeave | undefined): SickLeave | undefined => {
+    console.log('maybeSickLeave:', maybeSickLeave);
+
+    return undefined;
+};
+
+const toOccupationalHealthcareEntry = (maybeEntry: any): Omit<OccupationalHealthcareEntry, "id"> => {
+    return {
+        ...toNewBaseEntry(maybeEntry),
+        type: 'OccupationalHealthcare',
+        employerName: parseString(maybeEntry.employerName, 'employer name missing or invalid'),
+        sickLeave: parseSickLeave(maybeEntry.sickLeave),
+    };
+};
+
+export const toNewEntry = (maybeEntry: any): NewEntry => {
+    switch (maybeEntry.type) {
+        case 'HealthCheck':
+            return toNewHealthCheckEntry(maybeEntry);
+        case 'Hospital':
+            return toHospitalEntry(maybeEntry);
+        case 'OccupationalHealthcare':
+            return toOccupationalHealthcareEntry(maybeEntry);
+        default:
+            // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
+            throw new Error(`invalid entry type: ${maybeEntry.type}`);
+    }
 };
