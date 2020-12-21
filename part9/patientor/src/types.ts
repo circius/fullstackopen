@@ -19,7 +19,7 @@ export interface BaseEntry {
     diagnosisCodes?: string[]
 }
 
-export enum HealthRating {
+export enum HealthCheckRating {
     Good,
     Middling,
     Bad
@@ -27,12 +27,11 @@ export enum HealthRating {
 
 export interface HealthCheckEntry extends BaseEntry {
     type: 'HealthCheck',
-    healthCheckRating: HealthRating
+    healthCheckRating: HealthCheckRating
 }
 
 export interface HospitalEntry extends BaseEntry {
     type: 'Hospital'
-
     discharge?: Discharge
 }
 
@@ -70,7 +69,10 @@ export type NonSensitivePatient = Omit<Patient, 'ssn' | 'entries'>;
 
 export type NewPatient = Omit<Patient, "id">;
 
-export type NewEntry = Omit<Entry, "id">;
+export type NewEntry =
+    | Omit<HospitalEntry, "id">
+    | Omit<OccupationalHealthcareEntry, "id">
+    | Omit<HealthCheckEntry, "id">;
 
 export enum Gender {
     Other = "other",
