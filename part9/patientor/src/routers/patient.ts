@@ -25,15 +25,15 @@ patientRouter.get('/:id', (req, res) => {
     const patient: Patient | undefined = patientService.getPatient(id);
     res.json(patient);
 });
-patientRouter.post('/:id/entries', (req, _res) => {
-    console.log('post received!!');
-
-    const id = req.params.id;
-    console.log('id:', id);
-
-    const entry: NewEntry = toNewEntry(req.body);
-    console.log('entry:', entry);
-
+patientRouter.post('/:id/entries', (req, res) => {
+    const userId = req.params.id;
+    const newEntry: NewEntry = toNewEntry(req.body);
+    try {
+        const patientWithEntry: Patient = patientService.addEntry(userId, newEntry);
+        res.json(patientWithEntry);
+    } catch ({ message }) {
+        res.status(400).send(message);
+    }
 });
 
 export = patientRouter;
