@@ -1,7 +1,7 @@
 import patientData from '../../testdata/patients-typed';
-import { Patient, NonSensitivePatient, NewPatient } from '../types';
+import { Patient, NonSensitivePatient, NewPatient, NewEntry } from '../types';
 
-const patients: Patient[] = patientData;
+let patients: Patient[] = patientData;
 
 const getPatients = (): Patient[] => {
     return patients;
@@ -41,11 +41,37 @@ const getNonSensitivePatient = (id: string): NonSensitivePatient | undefined => 
 
 const addPatient = (patient: NewPatient): Patient => {
     const newPatient = {
-        id: String(Math.random() * 10 ** 4),
+        id: generateId(),
         ...patient
     };
     patients.push(newPatient);
     return newPatient;
+};
+
+const generateId = (): string => {
+    return String(Math.random() * 10 ** 4);
+};
+
+const patientAddEntry = (patient: Patient, newEntry: NewEntry): Patient => {
+    const entry = {
+        id: generateId(),
+        ...newEntry
+    };
+    return {
+        ...patient,
+        entries: patient.entries.concat(entry)
+    };
+};
+
+const addEntry = (id: string, newEntry: NewEntry): Patient => {
+    const maybePatient = patients.find(patient => patient.id === id);
+    if (!maybePatient) {
+        throw new Error("Invalid patient id");
+    } else {
+        const newPatient: Patient = patientAddEntry(maybePatient, newEntry);
+        patients = patients.map(patient => patient.id === newPatient.id ? newPatient : patient);
+        return newPatient;
+    }
 };
 
 export default {
@@ -53,5 +79,6 @@ export default {
     getNonSensitivePatients,
     getPatient,
     getNonSensitivePatient,
-    addPatient
+    addPatient,
+    addEntry
 };
