@@ -2,7 +2,7 @@ import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { apiBaseUrl } from '../constants';
-import { useStateValue, addPatient, addEntry } from '../state';
+import { useStateValue, addPatient, updateEntries } from '../state';
 import { Entry, Patient } from '../types';
 import useModal from '../hooks/useModal'
 
@@ -43,12 +43,12 @@ const PatientInfoPage: React.FC = () => {
 
     const submitNewEntry = async (values: EntryFormValues) => {
         try {
-            const { data: entry } = await axios.post<Entry>(
-                `${apiBaseUrl}/patients/${id}`,
+            const { data: entries } = await axios.post<Entry[]>(
+                `${apiBaseUrl}/patients/${id}/entries`,
                 values
             )
-            const payload = { patientId: id, entry }
-            dispatch(addEntry(payload));
+            const payload = { patientId: id, entries }
+            dispatch(updateEntries(payload));
             closeModal();
         } catch (e) {
             console.error(e.response.data)
