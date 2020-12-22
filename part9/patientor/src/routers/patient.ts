@@ -1,6 +1,6 @@
 import Router from 'express';
 import patientService from '../services/patient';
-import { NonSensitivePatient, Patient, NewPatient, NewEntry } from '../types';
+import { NonSensitivePatient, Patient, NewPatient, NewEntry, Entry } from '../types';
 import { toNewPatient, toNewEntry } from '../utility';
 
 const patientRouter = Router();
@@ -27,10 +27,11 @@ patientRouter.get('/:id', (req, res) => {
 });
 patientRouter.post('/:id/entries', (req, res) => {
     const userId = req.params.id;
+    console.log('request to update entry for user:', userId);
     const newEntry: NewEntry = toNewEntry(req.body);
     try {
-        const patientWithEntry: Patient = patientService.addEntry(userId, newEntry);
-        res.json(patientWithEntry);
+        const newEntries: Entry[] = patientService.addEntry(userId, newEntry);
+        res.json(newEntries);
     } catch ({ message }) {
         res.status(400).send(message);
     }
