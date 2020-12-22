@@ -26,7 +26,7 @@ const isGender = (maybeGender: any): maybeGender is Gender => {
 };
 
 const isEntries = (maybeEntries: any): maybeEntries is Entry[] => {
-    return Array.isArray(maybeEntries) && maybeEntries.filter(
+    return !maybeEntries || Array.isArray(maybeEntries) && maybeEntries.filter(
         entry => !isEntry(entry)).length === 0;
 };
 
@@ -35,8 +35,8 @@ const isEntry = (maybeEntry: any): boolean => {
 };
 
 const parseEntries = (maybeEntries: any): Entry[] => {
-    if (!maybeEntries || !isEntries(maybeEntries)) {
-        throw new Error('missing or invalid entries');
+    if (!isEntries(maybeEntries)) {
+        throw new Error('invalid entries');
     }
     return maybeEntries;
 };
