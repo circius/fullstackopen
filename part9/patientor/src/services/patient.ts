@@ -1,5 +1,5 @@
 import patientData from '../../testdata/patients-typed';
-import { Patient, NonSensitivePatient, NewPatient, NewEntry } from '../types';
+import { Patient, NonSensitivePatient, NewPatient, NewEntry, Entry } from '../types';
 
 let patients: Patient[] = patientData;
 
@@ -63,14 +63,14 @@ const patientAddEntry = (patient: Patient, newEntry: NewEntry): Patient => {
     };
 };
 
-const addEntry = (id: string, newEntry: NewEntry): Patient => {
+const addEntry = (id: string, newEntry: NewEntry): Entry[] => {
     const maybePatient = patients.find(patient => patient.id === id);
     if (!maybePatient) {
         throw new Error("Invalid patient id");
     } else {
         const newPatient: Patient = patientAddEntry(maybePatient, newEntry);
         patients = patients.map(patient => patient.id === newPatient.id ? newPatient : patient);
-        return newPatient;
+        return newPatient.entries;
     }
 };
 
