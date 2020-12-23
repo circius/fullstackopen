@@ -34,6 +34,8 @@ interface BaseEntry {
   diagnosisCodes?: string[];
 }
 
+
+
 export interface HealthCheckEntry extends BaseEntry {
   type: 'HealthCheck';
   healthCheckRating: healthRating;
@@ -62,3 +64,7 @@ export interface OccupationalHealthcareEntry extends BaseEntry {
     endDate: string;
   };
 }
+export type NewEntry =
+  | Omit<HospitalEntry, "id">
+  | Omit<OccupationalHealthcareEntry, "id">
+  | Omit<HealthCheckEntry, "id">;
