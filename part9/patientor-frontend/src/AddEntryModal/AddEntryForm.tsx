@@ -6,10 +6,6 @@ import { TextField, DiagnosisSelection } from "../components/FormField";
 import { NewEntry } from "../types";
 import { useStateValue } from "../state";
 
-/*
- * use type HospitalEntry, but omit id and type,
- * because those are irrelevant for new patient object.
- */
 export type EntryFormValues = NewEntry
 
 interface Props {
