@@ -1,6 +1,5 @@
 import { State } from "./state";
 import { Diagnosis, Entry, Patient } from "../types";
-import PatientListPage from "../PatientListPage";
 
 export const setPatientList = (payload: Patient[]): Action => ({
   type: "SET_PATIENT_LIST",
