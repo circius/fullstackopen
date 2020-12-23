@@ -37,15 +37,17 @@ export const AddPatientForm: React.FC<Props> = ({ onSubmit, onCancel }) => {
             validate={values => {
                 const requiredError = "Field is required";
                 const errors: { [field: string]: string } = {};
+
                 if (!values.date) {
-                    errors.name = requiredError;
+                    errors.date = requiredError;
                 }
                 if (!values.specialist) {
-                    errors.ssn = requiredError;
+                    errors.specialist = requiredError;
                 }
                 if (!values.description) {
-                    errors.dateOfBirth = requiredError;
+                    errors.description = requiredError;
                 }
+
                 return errors;
             }}
         >
