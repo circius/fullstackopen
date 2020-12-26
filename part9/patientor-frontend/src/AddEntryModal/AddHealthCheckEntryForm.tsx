@@ -26,20 +26,18 @@ const AddHealthCheckEntryForm: React.FC<Props> = ({ onSubmit, onCancel }) => {
             }}
             onSubmit={onSubmit}
             validate={values => {
+                const requiredError = "Field is required";
                 const errors: { [field: string]: string } = {};
 
-                //     if (!values.date) {
-                //         errors.date = requiredError;
-                //     }
-                //     // if (!values.specialist) {
-                //     //     errors.specialist = requiredError;
-                //     // }
-                //     // if (!values.description) {
-                //     //     errors.description = requiredError;
-                //     // }
-                //     if (!values.healthCheckRating) {
-                //         errors.description = requiredError;
-                //     }
+                if (!values.date) {
+                    errors.date = requiredError;
+                }
+                if (!values.specialist) {
+                    errors.specialist = requiredError;
+                }
+                if (!values.description) {
+                    errors.description = requiredError;
+                }
 
                 return errors;
             }}
