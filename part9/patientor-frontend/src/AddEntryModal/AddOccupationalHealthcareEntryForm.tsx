@@ -31,20 +31,23 @@ const AddOccupationalHealthcareEntryForm: React.FC<Props> = ({ onSubmit, onCance
             }}
             onSubmit={onSubmit}
             validate={values => {
-                const errors: { [field: string]: string } = {};
+                const requiredError = "Field is required";
 
-                //     if (!values.date) {
-                //         errors.date = requiredError;
-                //     }
-                //     // if (!values.specialist) {
-                //     //     errors.specialist = requiredError;
-                //     // }
-                //     // if (!values.description) {
-                //     //     errors.description = requiredError;
-                //     // }
-                //     if (!values.healthCheckRating) {
-                //         errors.description = requiredError;
-                //     }
+                const errors: { [field: string]: string } = {};
+                console.log('errors: ', errors)
+                console.log('values.sickLeave?.endDate: ', values.sickLeave?.endDate)
+                console.log('values.sickLeave?.endDate && !values.sickLeave?.startDate: ', values.sickLeave?.endDate && !values.sickLeave?.startDate)
+
+                if (!values.date) {
+                    errors.date = requiredError;
+                }
+                if (!values.specialist) {
+                    errors.specialist = requiredError;
+                }
+                if (!values.description) {
+                    errors.description = requiredError;
+                }
+
 
                 return errors;
             }}
