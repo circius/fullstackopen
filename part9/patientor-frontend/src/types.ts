@@ -68,3 +68,5 @@ export type NewEntry =
   | Omit<HospitalEntry, "id">
   | Omit<OccupationalHealthcareEntry, "id">
   | Omit<HealthCheckEntry, "id">;
+
+export type NewEntryTypes = Pick<NewEntry, "type">
