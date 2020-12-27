@@ -34,9 +34,6 @@ const AddOccupationalHealthcareEntryForm: React.FC<Props> = ({ onSubmit, onCance
                 const requiredError = "Field is required";
 
                 const errors: { [field: string]: string } = {};
-                console.log('errors: ', errors)
-                console.log('values.sickLeave?.endDate: ', values.sickLeave?.endDate)
-                console.log('values.sickLeave?.endDate && !values.sickLeave?.startDate: ', values.sickLeave?.endDate && !values.sickLeave?.startDate)
 
                 if (!values.date) {
                     errors.date = requiredError;
@@ -47,7 +44,6 @@ const AddOccupationalHealthcareEntryForm: React.FC<Props> = ({ onSubmit, onCance
                 if (!values.description) {
                     errors.description = requiredError;
                 }
-
 
                 return errors;
             }}
