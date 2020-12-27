@@ -26,8 +26,6 @@ const AddEntryForm: React.FC<Props> = ({ onSubmit, onCancel, EntryType }) => {
             return <AddOccupationalHealthcareEntryForm onSubmit={onSubmit} onCancel={onCancel} />
         case "HealthCheck":
             return <AddHealthCheckEntryForm onSubmit={onSubmit} onCancel={onCancel} />
-        case undefined:
-            return <div>waiting</div>
         default:
             return assertNever(EntryType.type)
 
